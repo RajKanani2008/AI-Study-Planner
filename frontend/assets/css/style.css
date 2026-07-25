@@ -1,0 +1,727 @@
+/*=========================================================
+ SMART AI STUDY PLANNER
+ Main Stylesheet
+ Author : Raj Kanani
+ Version : 1.0
+==========================================================*/
+
+/*=========================
+ Google Font
+=========================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/*=========================
+ Root Variables
+=========================*/
+
+:root{
+
+    --primary:#2563eb;
+    --secondary:#7c3aed;
+    --success:#22c55e;
+    --warning:#f59e0b;
+    --danger:#ef4444;
+
+    --dark:#0f172a;
+    --dark-light:#1e293b;
+    --card:#162033;
+
+    --white:#ffffff;
+    --text:#dbeafe;
+    --gray:#94a3b8;
+
+    --gradient:linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    --shadow:0 15px 40px rgba(0,0,0,.35);
+
+    --radius:18px;
+
+    --transition:.35s ease;
+
+}
+
+/*=========================
+ Reset
+=========================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:var(--dark);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+    line-height:1.7;
+
+}
+
+/*=========================
+ Scrollbar
+=========================*/
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#111827;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+/*=========================
+ Links
+=========================*/
+
+a{
+
+    text-decoration:none;
+
+    transition:var(--transition);
+
+}
+
+a:hover{
+
+    color:#fff;
+
+}
+
+/*=========================
+ Images
+=========================*/
+
+img{
+
+    width:100%;
+
+    display:block;
+
+}
+
+/*=========================
+ Container
+=========================*/
+
+.container{
+
+    max-width:1200px;
+
+}
+
+/*=========================
+ Loader
+=========================*/
+
+#loader{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100vh;
+
+    background:#020617;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:999999;
+
+}
+
+.loader-circle{
+
+    width:70px;
+
+    height:70px;
+
+    border:6px solid rgba(255,255,255,.2);
+
+    border-top:6px solid #3b82f6;
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+}
+
+@keyframes spin{
+
+    100%{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/*=========================
+ Scroll Top Button
+=========================*/
+
+#scrollTop{
+
+    position:fixed;
+
+    right:30px;
+
+    bottom:30px;
+
+    width:52px;
+
+    height:52px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:var(--gradient);
+
+    color:#fff;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    display:none;
+
+    z-index:999;
+
+    box-shadow:var(--shadow);
+
+}
+
+#scrollTop:hover{
+
+    transform:translateY(-5px);
+
+}
+
+/*=========================
+ Navbar
+=========================*/
+
+.custom-navbar{
+
+    background:rgba(15,23,42,.75);
+
+    backdrop-filter:blur(16px);
+
+    transition:.4s;
+
+    padding:18px 0;
+
+}
+
+.navbar-brand{
+
+    font-size:28px;
+
+    color:#fff;
+
+    font-weight:700;
+
+}
+
+.navbar-brand span{
+
+    margin-left:8px;
+
+}
+
+.navbar-brand i{
+
+    color:#3b82f6;
+
+}
+
+.nav-link{
+
+    color:#dbeafe;
+
+    font-weight:500;
+
+    margin:0 12px;
+
+}
+
+.nav-link:hover{
+
+    color:#60a5fa;
+
+}
+
+/*=========================
+ Buttons
+=========================*/
+
+.btn{
+
+    border-radius:50px;
+
+    padding:12px 28px;
+
+    transition:.35s;
+
+}
+
+.btn-primary{
+
+    background:var(--gradient);
+
+    border:none;
+
+}
+
+.btn-primary:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 30px rgba(37,99,235,.35);
+
+}
+
+.btn-outline-light{
+
+    border:2px solid rgba(255,255,255,.25);
+
+}
+
+/*=========================================================
+                    HERO SECTION
+=========================================================*/
+
+.hero-section{
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:140px 0 100px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+    radial-gradient(circle at top right,#2563eb33,transparent 35%),
+    radial-gradient(circle at bottom left,#7c3aed33,transparent 35%),
+    #0f172a;
+
+}
+
+.hero-section::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:500px;
+
+    height:500px;
+
+    background:#2563eb22;
+
+    filter:blur(120px);
+
+    top:-150px;
+
+    right:-120px;
+
+}
+
+.hero-section::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:450px;
+
+    height:450px;
+
+    background:#7c3aed22;
+
+    filter:blur(120px);
+
+    bottom:-180px;
+
+    left:-120px;
+
+}
+
+/*=========================
+ Hero Text
+=========================*/
+
+.hero-section h1{
+
+    font-size:65px;
+
+    font-weight:800;
+
+    line-height:1.2;
+
+    color:#fff;
+
+    margin-bottom:25px;
+
+}
+
+.hero-section h1 span{
+
+    background:var(--gradient);
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+}
+
+.hero-section p{
+
+    font-size:18px;
+
+    color:var(--gray);
+
+    margin-bottom:35px;
+
+    max-width:600px;
+
+}
+
+/*=========================
+ Hero Buttons
+=========================*/
+
+.hero-buttons{
+
+    display:flex;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.hero-buttons .btn{
+
+    min-width:180px;
+
+}
+
+/*=========================
+ Badge
+=========================*/
+
+.badge-ai{
+
+    display:inline-block;
+
+    background:#2563eb20;
+
+    border:1px solid #3b82f655;
+
+    color:#60a5fa;
+
+    padding:10px 20px;
+
+    border-radius:50px;
+
+    margin-bottom:25px;
+
+    font-size:14px;
+
+}
+
+/*=========================
+ Hero Stats
+=========================*/
+
+.hero-stats{
+
+    display:flex;
+
+    gap:40px;
+
+    margin-top:50px;
+
+}
+
+.hero-stats div{
+
+    text-align:center;
+
+}
+
+.hero-stats h3{
+
+    color:#fff;
+
+    font-size:36px;
+
+    font-weight:700;
+
+}
+
+.hero-stats p{
+
+    margin-top:8px;
+
+    color:var(--gray);
+
+}
+
+/*=========================================================
+            DASHBOARD PREVIEW CARD
+=========================================================*/
+
+.dashboard-preview{
+
+    background:rgba(255,255,255,.06);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:25px;
+
+    padding:35px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.dashboard-preview h4{
+
+    color:#fff;
+
+    margin-bottom:25px;
+
+}
+
+.schedule-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#1e293b;
+
+    padding:15px 20px;
+
+    border-radius:14px;
+
+    margin-bottom:15px;
+
+    transition:.35s;
+
+}
+
+.schedule-item:hover{
+
+    transform:translateX(8px);
+
+    background:#263449;
+
+}
+
+.schedule-item span:last-child{
+
+    color:#60a5fa;
+
+    font-weight:600;
+
+}
+
+.ai-card{
+
+    margin-top:30px;
+
+    background:var(--gradient);
+
+    border-radius:18px;
+
+    padding:25px;
+
+}
+
+.ai-card h5{
+
+    color:#fff;
+
+    margin-bottom:15px;
+
+}
+
+.ai-card p{
+
+    color:#fff;
+
+    margin:0;
+
+    font-size:15px;
+
+}
+
+/*=========================================================
+                SECTION TITLE
+=========================================================*/
+
+.section-badge{
+
+    display:inline-block;
+
+    padding:10px 22px;
+
+    background:#2563eb22;
+
+    color:#60a5fa;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+}
+
+.section-title{
+
+    color:#fff;
+
+    font-size:45px;
+
+    font-weight:700;
+
+}
+
+.section-description{
+
+    color:var(--gray);
+
+    max-width:700px;
+
+    margin:auto;
+
+}
+
+/*=========================================================
+                FEATURE SECTION
+=========================================================*/
+
+.features-section{
+
+    padding:100px 0;
+
+}
+
+.feature-card{
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    padding:35px;
+
+    text-align:center;
+
+    transition:.4s;
+
+    height:100%;
+
+    backdrop-filter:blur(20px);
+
+}
+
+.feature-card:hover{
+
+    transform:translateY(-12px);
+
+    border-color:#3b82f6;
+
+    box-shadow:0 20px 45px rgba(37,99,235,.25);
+
+}
+
+.feature-icon{
+
+    width:90px;
+
+    height:90px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:var(--gradient);
+
+    color:#fff;
+
+    font-size:34px;
+
+    margin-bottom:25px;
+
+}
+
+.feature-card h4{
+
+    color:#fff;
+
+    margin-bottom:15px;
+
+}
+
+.feature-card p{
+
+    color:var(--gray);
+
+    font-size:15px;
+
+}
