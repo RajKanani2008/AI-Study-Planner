@@ -1,0 +1,1039 @@
+/*=========================================
+        DASHBOARD CSS
+=========================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:#f4f7fc;
+
+    overflow-x:hidden;
+
+}
+
+.dashboard{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+/*=========================
+        SIDEBAR
+==========================*/
+
+.sidebar{
+
+    width:260px;
+
+    background:#1e293b;
+
+    color:#fff;
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    height:100vh;
+
+    padding:25px 20px;
+
+    overflow-y:auto;
+
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:40px;
+
+}
+
+.logo i{
+
+    font-size:34px;
+
+    color:#3b82f6;
+
+}
+
+.logo h3{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    margin:0;
+
+}
+
+/*=========================
+        MENU
+==========================*/
+
+.menu{
+
+    list-style:none;
+
+    padding:0;
+
+    margin:0;
+
+}
+
+.menu li{
+
+    margin-bottom:10px;
+
+}
+
+.menu li a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:14px 18px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    color:#cbd5e1;
+
+    transition:.3s;
+
+    font-size:15px;
+
+    font-weight:500;
+
+}
+
+.menu li a i{
+
+    width:22px;
+
+    text-align:center;
+
+    font-size:18px;
+
+}
+
+.menu li:hover a{
+
+    background:#2563eb;
+
+    color:#fff;
+
+}
+
+.menu li.active a{
+
+    background:#2563eb;
+
+    color:#fff;
+
+}
+
+/*=========================
+        MAIN CONTENT
+==========================*/
+
+.main-content{
+
+    flex:1;
+
+    margin-left:260px;
+
+    padding:30px;
+
+    min-height:100vh;
+
+    background:#f8fafc;
+
+}
+
+/*=========================
+        TOP NAVBAR
+==========================*/
+
+.top-navbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+    background:#ffffff;
+
+    padding:15px 25px;
+
+    border-radius:16px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+}
+
+.search-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:#f1f5f9;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    width:350px;
+
+}
+
+.search-box i{
+
+    color:#64748b;
+
+    font-size:16px;
+
+}
+
+.search-box input{
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    width:100%;
+
+    font-size:15px;
+
+}
+
+.nav-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+/*=========================
+        ICON BUTTON
+==========================*/
+
+.icon-btn{
+
+    width:45px;
+
+    height:45px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#f1f5f9;
+
+    color:#334155;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:18px;
+
+}
+
+.icon-btn:hover{
+
+    background:#2563eb;
+
+    color:#fff;
+
+}
+
+/*=========================
+        PROFILE
+==========================*/
+
+.profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    cursor:pointer;
+
+}
+
+.profile img{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid #2563eb;
+
+}
+
+.profile span{
+
+    font-weight:600;
+
+    color:#1e293b;
+
+}
+
+.profile i{
+
+    color:#64748b;
+
+    font-size:14px;
+
+}
+
+/*=========================
+        WELCOME
+==========================*/
+
+.welcome{
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#fff;
+
+    padding:35px;
+
+    border-radius:20px;
+
+    margin-bottom:30px;
+
+    box-shadow:0 10px 30px rgba(37,99,235,.25);
+
+}
+
+.welcome h2{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+}
+
+.welcome p{
+
+    font-size:16px;
+
+    opacity:.9;
+
+    margin:0;
+
+}
+
+/*=========================
+      DASHBOARD CARDS
+==========================*/
+
+.dashboard-content{
+
+    margin-top:30px;
+
+}
+
+.stat-card{
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    height:100%;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+}
+
+.card-icon{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:28px;
+
+}
+
+.blue{
+
+    background:#2563eb;
+
+}
+
+.green{
+
+    background:#16a34a;
+
+}
+
+.orange{
+
+    background:#f59e0b;
+
+}
+
+.red{
+
+    background:#ef4444;
+
+}
+
+.card-info h3{
+
+    margin:0;
+
+    font-size:30px;
+
+    font-weight:700;
+
+    color:#0f172a;
+
+}
+
+.card-info p{
+
+    margin-top:6px;
+
+    color:#64748b;
+
+    font-size:15px;
+
+}
+
+/*=========================
+      COMMON CARD
+==========================*/
+
+.dashboard-card{
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    height:100%;
+
+    transition:.3s;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.10);
+
+}
+
+.dashboard-card h4{
+
+    font-size:22px;
+
+    font-weight:600;
+
+    color:#0f172a;
+
+    margin-bottom:20px;
+
+}
+
+/*=========================
+      PROGRESS BAR
+==========================*/
+
+.progress{
+
+    height:12px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    background:#e2e8f0;
+
+}
+
+.progress-bar{
+
+    font-size:12px;
+
+    font-weight:600;
+
+    line-height:12px;
+
+}
+
+/*=========================
+      BUTTONS
+==========================*/
+
+.dashboard-card .btn{
+
+    border-radius:10px;
+
+    padding:10px 20px;
+
+    font-weight:600;
+
+}
+
+/*=========================
+      TODAY TASKS
+==========================*/
+
+.list-group-item{
+
+    border:none;
+
+    padding:15px 0;
+
+    font-size:15px;
+
+    color:#334155;
+
+    border-bottom:1px solid #e5e7eb;
+
+}
+
+.list-group-item:last-child{
+
+    border-bottom:none;
+
+}
+
+/*=========================
+      TABLE
+==========================*/
+
+.table{
+
+    margin-bottom:0;
+
+}
+
+.table thead{
+
+    background:#2563eb;
+
+    color:#fff;
+
+}
+
+.table thead th{
+
+    border:none;
+
+    padding:16px;
+
+    font-weight:600;
+
+}
+
+.table tbody td{
+
+    padding:16px;
+
+    vertical-align:middle;
+
+    border-color:#e5e7eb;
+
+}
+
+.table-hover tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+/*=========================
+      BADGES
+==========================*/
+
+.badge{
+
+    padding:8px 14px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+/*=========================
+      ALERT BOX
+==========================*/
+
+.alert{
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:18px;
+
+    font-size:15px;
+
+    margin-bottom:18px;
+
+}
+
+/*=========================
+      QUICK ACTION
+==========================*/
+
+.d-grid .btn{
+
+    padding:14px;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.d-grid .btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/*=========================
+      CHART
+==========================*/
+
+canvas{
+
+    width:100% !important;
+
+    max-height:350px;
+
+}
+
+/*=========================
+      DEADLINES
+==========================*/
+
+.list-group{
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+}
+
+.list-group-item{
+
+    background:#fff;
+
+    transition:.3s;
+
+}
+
+.list-group-item:hover{
+
+    background:#f8fafc;
+
+}
+
+/*=========================
+      RECENT ACTIVITY
+==========================*/
+
+.list-group-item strong{
+
+    color:#0f172a;
+
+}
+
+.list-group-item small{
+
+    color:#64748b;
+
+}
+
+.float-end{
+
+    font-size:13px;
+
+    color:#94a3b8 !important;
+
+}
+
+/*=========================
+      CARD ANIMATION
+==========================*/
+
+.dashboard-card,
+.stat-card{
+
+    animation:fadeUp .6s ease;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/*=========================
+      DARK MODE
+==========================*/
+
+.dashboard.dark{
+
+    background:#0f172a;
+
+}
+
+.dashboard.dark .main-content{
+
+    background:#111827;
+
+}
+
+.dashboard.dark .top-navbar,
+.dashboard.dark .dashboard-card,
+.dashboard.dark .stat-card,
+.dashboard.dark .welcome{
+
+    background:#1e293b;
+
+    color:#ffffff;
+
+}
+
+.dashboard.dark .card-info h3,
+.dashboard.dark .dashboard-card h4,
+.dashboard.dark .profile span{
+
+    color:#ffffff;
+
+}
+
+.dashboard.dark .list-group-item{
+
+    background:#1e293b;
+
+    color:#e2e8f0;
+
+    border-color:#334155;
+
+}
+
+.dashboard.dark .table{
+
+    color:#ffffff;
+
+}
+
+.dashboard.dark .search-box{
+
+    background:#334155;
+
+}
+
+.dashboard.dark .search-box input{
+
+    color:#ffffff;
+
+}
+
+.dashboard.dark .search-box input::placeholder{
+
+    color:#cbd5e1;
+
+}
+
+/*=========================
+      PROFILE DROPDOWN
+==========================*/
+
+.profile-dropdown{
+
+    position:relative;
+
+}
+
+.dropdown-menu-custom{
+
+    position:absolute;
+
+    top:60px;
+
+    right:0;
+
+    width:220px;
+
+    background:#ffffff;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+    display:none;
+
+    z-index:1000;
+
+}
+
+.dropdown-menu-custom.show{
+
+    display:block;
+
+}
+
+.dropdown-menu-custom a{
+
+    display:block;
+
+    padding:14px 18px;
+
+    text-decoration:none;
+
+    color:#1e293b;
+
+    transition:.3s;
+
+}
+
+.dropdown-menu-custom a:hover{
+
+    background:#f1f5f9;
+
+}
+
+.dropdown-menu-custom i{
+
+    margin-right:10px;
+
+}
+
+/*=========================
+      SCROLLBAR
+==========================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#2563eb;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#e5e7eb;
+
+}
+
+/*=========================
+      RESPONSIVE
+==========================*/
+
+@media(max-width:992px){
+
+    .sidebar{
+
+        left:-260px;
+
+        transition:.3s;
+
+        z-index:999;
+
+    }
+
+    .sidebar.show{
+
+        left:0;
+
+    }
+
+    .main-content{
+
+        margin-left:0;
+
+        padding:20px;
+
+    }
+
+    .top-navbar{
+
+        flex-wrap:wrap;
+
+        gap:15px;
+
+    }
+
+    .search-box{
+
+        width:100%;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .welcome{
+
+        padding:25px;
+
+    }
+
+    .welcome h2{
+
+        font-size:24px;
+
+    }
+
+    .stat-card{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .profile span{
+
+        display:none;
+
+    }
+
+}
+
+@media(max-width:576px){
+
+    .top-navbar{
+
+        padding:15px;
+
+    }
+
+    .dashboard-card{
+
+        padding:18px;
+
+    }
+
+    .card-info h3{
+
+        font-size:24px;
+
+    }
+
+    .logo h3{
+
+        display:none;
+
+    }
+
+}

@@ -1,0 +1,157 @@
+/*=========================================
+        LOGIN PAGE
+=========================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:linear-gradient(135deg,#2563eb,#0f172a);
+
+    min-height:100vh;
+
+}
+
+.login-section{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:100vh;
+
+    padding:40px 15px;
+
+}
+
+.login-card{
+
+    background:rgba(255,255,255,.95);
+
+    border-radius:20px;
+
+    padding:40px;
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
+
+    animation:fadeUp .7s ease;
+
+}
+
+.login-icon{
+
+    font-size:60px;
+
+    color:#2563eb;
+
+}
+
+.login-card h2{
+
+    font-weight:700;
+
+    color:#0f172a;
+
+}
+
+.login-card p{
+
+    color:#64748b;
+
+}
+
+.form-control{
+
+    height:50px;
+
+    border-radius:10px;
+
+    border:1px solid #d1d5db;
+
+}
+
+.form-control:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.2);
+
+}
+
+.input-group .btn{
+
+    border-radius:0 10px 10px 0;
+
+}
+
+.btn-primary{
+
+    height:50px;
+
+    border-radius:10px;
+
+    font-weight:600;
+
+    background:#2563eb;
+
+    border:none;
+
+    transition:.3s;
+
+}
+
+.btn-primary:hover{
+
+    background:#1d4ed8;
+
+}
+
+a{
+
+    text-decoration:none;
+
+}
+
+a:hover{
+
+    text-decoration:underline;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .login-card{
+
+        padding:25px;
+
+    }
+
+}
