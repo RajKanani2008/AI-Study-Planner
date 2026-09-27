@@ -625,7 +625,8 @@ if (loginForm) {
 
 }
 
-const username = document.getElementById("username");
+const username = localStorage.getItem("username") || "Student";
+document.getElementById("dashboardUser").textContent = username;
 
 if (username) {
 
