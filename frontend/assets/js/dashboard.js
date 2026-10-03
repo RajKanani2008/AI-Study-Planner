@@ -30,6 +30,78 @@ window.addEventListener("load", () => {
 ========================================================== */
 
 const counters = document.querySelectorAll("[data-count]");
+const studyStorage = window.StudyPlanner.storage;
+const dashboardTasks = studyStorage.read("studyPlannerTasks", []);
+const dashboardSubjects = studyStorage.read("studyPlannerSubjects", []);
+const dashboardSessions = studyStorage.read("studySessions", []);
+const dashboardDateKey = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+const todayKey = dashboardDateKey(new Date());
+const todayTasks = dashboardTasks.filter(task => task.dueDate === todayKey);
+const todayCompleted = todayTasks.filter(task => task.completed).length;
+const todayFocusMinutes = dashboardSessions.filter(session => (session.date || session.completedAt?.slice(0, 10)) === todayKey).reduce((total, session) => total + (Number(session.minutes) || 0), 0);
+const focusMinutes = dashboardSessions.reduce((total, session) => total + (Number(session.minutes) || 0), 0);
+const sessionDays = new Set(dashboardSessions.map(session => session.completedAt?.slice(0, 10)).filter(Boolean));
+let focusStreak = 0;
+const streakDate = new Date();
+streakDate.setHours(0, 0, 0, 0);
+if (!sessionDays.has(`${streakDate.getFullYear()}-${String(streakDate.getMonth() + 1).padStart(2, "0")}-${String(streakDate.getDate()).padStart(2, "0")}`)) {
+    streakDate.setDate(streakDate.getDate() - 1);
+}
+while (sessionDays.has(`${streakDate.getFullYear()}-${String(streakDate.getMonth() + 1).padStart(2, "0")}-${String(streakDate.getDate()).padStart(2, "0")}`)) {
+    focusStreak += 1;
+    streakDate.setDate(streakDate.getDate() - 1);
+}
+[
+    dashboardSubjects.length,
+    dashboardTasks.filter(task => task.completed).length,
+    focusStreak,
+    Math.round(focusMinutes / 60)
+].forEach((value, index) => {
+    if (counters[index]) counters[index].dataset.count = String(value);
+});
+
+const completionPercent = todayTasks.length ? Math.round(todayCompleted / todayTasks.length * 100) : 0;
+const completionBadge = document.getElementById("todayCompletion");
+const completionBar = document.getElementById("todayProgressBar");
+if (completionBadge) completionBadge.textContent = `${completionPercent}% completed`;
+if (completionBar) {
+    completionBar.style.width = `${completionPercent}%`;
+    completionBar.setAttribute("aria-valuenow", String(completionPercent));
+    completionBar.setAttribute("role", "progressbar");
+    completionBar.setAttribute("aria-label", "Tasks completed today");
+    completionBar.setAttribute("aria-valuemin", "0");
+    completionBar.setAttribute("aria-valuemax", "100");
+}
+const todayTaskCount = document.getElementById("todayTaskCount");
+const todayFocusTime = document.getElementById("todayFocusTime");
+const todayDoneCount = document.getElementById("todayDoneCount");
+if (todayTaskCount) todayTaskCount.textContent = String(todayTasks.length);
+if (todayFocusTime) todayFocusTime.textContent = todayFocusMinutes >= 60 ? `${Math.round(todayFocusMinutes / 60 * 10) / 10}h` : `${todayFocusMinutes}m`;
+if (todayDoneCount) todayDoneCount.textContent = `${completionPercent}%`;
+
+const todaySchedule = document.getElementById("todaySchedule");
+if (todaySchedule) {
+    todaySchedule.innerHTML = todayTasks.length ? todayTasks.map(task => `<article class="schedule-item"><div><strong>${window.StudyPlanner.escapeHtml(task.title)}</strong><p>${window.StudyPlanner.escapeHtml(task.subject || "General")} · Due today</p></div><span class="badge ${task.completed ? "text-bg-success" : task.priority === "high" ? "text-bg-danger" : "text-bg-secondary"}">${task.completed ? "Completed" : window.StudyPlanner.escapeHtml(task.priority || "Open")}</span></article>`).join("") : '<div class="empty-state"><i class="fa-regular fa-calendar" aria-hidden="true"></i><strong>No tasks due today</strong><span>Add tasks to see your study schedule here.</span><a class="btn btn-sm btn-outline-primary mt-2" href="tasks.html">Add a task</a></div>';
+}
+
+const dashboardSearch = document.querySelector(".dashboard-navbar .search-box input");
+if (dashboardSearch) {
+    const searchableItems = [...document.querySelectorAll(".schedule-item, .recommend-item")];
+    const searchStatus = document.createElement("span");
+    searchStatus.className = "visually-hidden";
+    searchStatus.setAttribute("aria-live", "polite");
+    dashboardSearch.parentElement.append(searchStatus);
+    dashboardSearch.addEventListener("input", () => {
+        const query = dashboardSearch.value.trim().toLocaleLowerCase();
+        let matches = 0;
+        searchableItems.forEach(item => {
+            const visible = !query || item.textContent.toLocaleLowerCase().includes(query);
+            item.hidden = !visible;
+            if (visible) matches += 1;
+        });
+        searchStatus.textContent = query ? `${matches} dashboard results` : "Search cleared";
+    });
+}
 
 counters.forEach(counter => {
 
@@ -66,8 +138,17 @@ counters.forEach(counter => {
 ========================================================== */
 
 const chartCanvas = document.getElementById("studyChart");
+const chartTextColor = getComputedStyle(document.body).getPropertyValue("--muted").trim() || "#667a73";
+const chartDays = Array.from({ length: 7 }, (_, index) => {
+    const day = new Date();
+    day.setHours(0, 0, 0, 0);
+    day.setDate(day.getDate() - (6 - index));
+    const key = dashboardDateKey(day);
+    const minutes = dashboardSessions.filter(session => (session.date || session.completedAt?.slice(0, 10)) === key).reduce((total, session) => total + (Number(session.minutes) || 0), 0);
+    return { label: day.toLocaleDateString(undefined, { weekday: "short" }), hours: Math.round(minutes / 60 * 10) / 10 };
+});
 
-if (chartCanvas) {
+if (chartCanvas && typeof Chart !== "undefined") {
 
     new Chart(chartCanvas, {
 
@@ -75,17 +156,7 @@ if (chartCanvas) {
 
         data: {
 
-            labels: [
-
-                "Mon",
-                "Tue",
-                "Wed",
-                "Thu",
-                "Fri",
-                "Sat",
-                "Sun"
-
-            ],
+            labels: chartDays.map(day => day.label),
 
             datasets: [
 
@@ -93,21 +164,11 @@ if (chartCanvas) {
 
                     label: "Study Hours",
 
-                    data: [
+                    data: chartDays.map(day => day.hours),
 
-                        2,
-                        3,
-                        1,
-                        4,
-                        5,
-                        2,
-                        6
+                    borderColor: "#16765f",
 
-                    ],
-
-                    borderColor: "#4f46e5",
-
-                    backgroundColor: "rgba(79,70,229,.15)",
+                    backgroundColor: "rgba(22,118,95,.14)",
 
                     fill: true,
 
@@ -117,7 +178,7 @@ if (chartCanvas) {
 
                     pointRadius: 5,
 
-                    pointBackgroundColor: "#4f46e5"
+                    pointBackgroundColor: "#16765f"
 
                 }
 
@@ -137,7 +198,7 @@ if (chartCanvas) {
 
                     labels: {
 
-                        color: "#ffffff"
+                        color: chartTextColor
 
                     }
 
@@ -151,13 +212,13 @@ if (chartCanvas) {
 
                     ticks: {
 
-                        color: "#cbd5e1"
+                        color: chartTextColor
 
                     },
 
                     grid: {
 
-                        color: "rgba(255,255,255,.08)"
+                        color: "rgba(102,122,115,.16)"
 
                     }
 
@@ -169,13 +230,13 @@ if (chartCanvas) {
 
                     ticks: {
 
-                        color: "#cbd5e1"
+                        color: chartTextColor
 
                     },
 
                     grid: {
 
-                        color: "rgba(255,255,255,.08)"
+                        color: "rgba(102,122,115,.16)"
 
                     }
 
@@ -193,7 +254,7 @@ if (chartCanvas) {
                 LOAD USER NAME
 ========================================================== */
 
-const user = JSON.parse(localStorage.getItem("studyPlannerUser"));
+const user = window.StudyPlanner.storage.read("studyPlannerUser", null);
 
 if (user) {
 
@@ -214,75 +275,6 @@ if (user) {
     }
 
 }
-
-/* ==========================================================
-                DARK MODE
-========================================================== */
-
-const themeBtn = document.getElementById("themeToggle");
-
-if (themeBtn) {
-
-    // Load saved theme
-    if (localStorage.getItem("theme") === "dark") {
-
-        document.body.classList.add("dark-theme");
-
-    }
-
-    themeBtn.addEventListener("click", () => {
-
-        document.body.classList.toggle("dark-theme");
-
-        if (document.body.classList.contains("dark-theme")) {
-
-            localStorage.setItem("theme", "dark");
-
-        } else {
-
-            localStorage.removeItem("theme");
-
-        }
-
-    });
-
-}
-
-/* ==========================================================
-                SIDEBAR TOGGLE
-========================================================== */
-
-const menuToggle = document.getElementById("menuToggle");
-
-const sidebar = document.querySelector(".sidebar");
-
-if (menuToggle && sidebar) {
-
-    menuToggle.addEventListener("click", () => {
-
-        sidebar.classList.toggle("show");
-
-    });
-
-}
-
-/* ==========================================================
-                CLOSE SIDEBAR ON MOBILE
-========================================================== */
-
-document.querySelectorAll(".sidebar-menu a").forEach(link => {
-
-    link.addEventListener("click", () => {
-
-        if (window.innerWidth < 992 && sidebar) {
-
-            sidebar.classList.remove("show");
-
-        }
-
-    });
-
-});
 
 /* ==========================================================
                 PROFILE DROPDOWN
@@ -451,9 +443,29 @@ updateTimer();
                 QUICK NOTES (LOCAL STORAGE)
 ========================================================== */
 
-const notesArea = document.querySelector("textarea");
+const notesSection = [...document.querySelectorAll(".glass-card")]
+    .find(card => card.querySelector("h3")?.textContent.includes("Quick Notes"));
 
-const saveNotesBtn = document.querySelector(".glass-card .btn-primary");
+const notesArea = notesSection?.querySelector("textarea");
+
+const saveNotesBtn = notesSection?.querySelector(".btn-primary");
+
+const saveQuickNote = content => {
+    const notes = studyStorage.read("studyPlannerNotes", []);
+    const existing = notes.find(note => note.id === "dashboard-quick-note");
+    const updated = notes.filter(note => note.id !== "dashboard-quick-note");
+    if (content.trim()) {
+        updated.unshift({
+            id: "dashboard-quick-note",
+            title: "Quick notes",
+            subject: "General",
+            body: content.trim(),
+            pinned: existing?.pinned || false,
+            updatedAt: new Date().toISOString()
+        });
+    }
+    studyStorage.write("studyPlannerNotes", updated);
+};
 
 if (notesArea) {
 
@@ -463,6 +475,7 @@ if (notesArea) {
     if (savedNotes) {
 
         notesArea.value = savedNotes;
+        saveQuickNote(savedNotes);
 
     }
 
@@ -473,8 +486,9 @@ if (saveNotesBtn && notesArea) {
     saveNotesBtn.addEventListener("click", () => {
 
         localStorage.setItem("studyNotes", notesArea.value);
+        saveQuickNote(notesArea.value);
 
-        alert("✅ Notes saved successfully!");
+        window.StudyPlanner.notify("Notes saved.");
 
     });
 
@@ -512,27 +526,27 @@ function sendMessage() {
 
     if (message === "") return;
 
-    chatContainer.innerHTML += `
-        <div class="chat-message user">
-            <div class="chat-avatar">👨</div>
-            <div class="chat-bubble">${message}</div>
-        </div>
-    `;
+    const addMessage = (role, text) => {
+        const row = document.createElement("div");
+        row.className = `chat-message ${role}`;
+        const avatar = document.createElement("div");
+        avatar.className = "chat-avatar";
+        avatar.setAttribute("aria-hidden", "true");
+        avatar.textContent = role === "user" ? "S" : "AI";
+        const bubble = document.createElement("div");
+        bubble.className = "chat-bubble";
+        bubble.textContent = text;
+        row.append(avatar, bubble);
+        chatContainer.append(row);
+    };
+
+    addMessage("user", message);
 
     chatInput.value = "";
 
     setTimeout(() => {
 
-        chatContainer.innerHTML += `
-            <div class="chat-message ai">
-                <div class="chat-avatar">🤖</div>
-                <div class="chat-bubble">
-                    AI Demo Response:<br>
-                    "${message}" received successfully.<br>
-                    AI integration will be connected later.
-                </div>
-            </div>
-        `;
+        addMessage("ai", `Demo response: “${message}” was received. No AI service is connected.`);
 
         chatContainer.scrollTop = chatContainer.scrollHeight;
 
@@ -559,6 +573,7 @@ if (notesArea) {
     notesArea.addEventListener("input", () => {
 
         localStorage.setItem("studyNotes", notesArea.value);
+        saveQuickNote(notesArea.value);
 
     });
 

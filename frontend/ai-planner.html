@@ -9,7 +9,6 @@
 
     <title>AI Study Planner | Smart AI Study Planner</title>
 
-    <link rel="icon" href="assets/images/logo.png">
 
     <!-- Bootstrap -->
 
@@ -30,6 +29,9 @@
     <link rel="stylesheet"
         href="assets/css/style.css">
 
+    <link rel="stylesheet"
+        href="assets/css/workspace.css">
+
 </head>
 
 <body>
@@ -48,7 +50,7 @@
 
     </div>
 
-    <ul>
+    <ul class="sidebar-menu">
 
         <li>
 
@@ -124,6 +126,42 @@
 
         <li>
 
+            <a href="notes.html">
+
+                <i class="fa-solid fa-note-sticky"></i>
+
+                Notes
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="notifications.html">
+
+                <i class="fa-regular fa-bell"></i>
+
+                Notifications
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="pomodoro.html">
+
+                <i class="fa-solid fa-stopwatch"></i>
+
+                Focus timer
+
+            </a>
+
+        </li>
+
+        <li>
+
             <a href="profile.html">
 
                 <i class="fa-solid fa-user"></i>
@@ -148,7 +186,7 @@
 
         <li>
 
-            <a href="logout.php">
+            <a href="login.html">
 
                 <i class="fa-solid fa-right-from-bracket"></i>
 
@@ -204,9 +242,7 @@
 
         </button>
 
-        <div class="user-box">
-
-            <img src="assets/images/user.png" alt="User">
+        <a class="user-box" href="profile.html">
 
             <div>
 
@@ -220,7 +256,7 @@
 
             </div>
 
-        </div>
+        </a>
 
     </div>
 
@@ -1219,16 +1255,16 @@
 <!-- App JS -->
 
 <script src="assets/js/app.js"></script>
+<script src="assets/js/workspace.js"></script>
+<script src="assets/js/ai.js"></script>
 
 <script>
 
-AOS.init({
+if (typeof AOS !== "undefined") {
 
-    duration:1000,
+    AOS.init({ duration: 700, once: true });
 
-    once:true
-
-});
+}
 
 </script>
 

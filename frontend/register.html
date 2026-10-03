@@ -18,9 +18,11 @@
 
     <link rel="stylesheet" href="./assets/css/register.css">
 
+    <link rel="stylesheet" href="./assets/css/workspace.css">
+
 </head>
 
-<body>
+<body class="auth-page">
 
 <section class="register-section">
 
@@ -48,12 +50,13 @@
 
                         <div class="mb-3">
 
-                            <label class="form-label">Full Name</label>
+                            <label class="form-label" for="fullName">Full Name</label>
 
                             <input
                                 type="text"
                                 class="form-control"
                                 id="fullName"
+                                autocomplete="name"
                                 placeholder="Enter your name"
                                 required>
 
@@ -61,12 +64,13 @@
 
                         <div class="mb-3">
 
-                            <label class="form-label">Email</label>
+                            <label class="form-label" for="email">Email</label>
 
                             <input
                                 type="email"
                                 class="form-control"
                                 id="email"
+                                autocomplete="email"
                                 placeholder="Enter your email"
                                 required>
 
@@ -74,7 +78,7 @@
 
                         <div class="mb-3">
 
-                            <label class="form-label">Password</label>
+                            <label class="form-label" for="password">Password</label>
 
                             <div class="input-group">
 
@@ -82,13 +86,16 @@
                                     type="password"
                                     class="form-control"
                                     id="password"
+                                    minlength="8"
+                                    autocomplete="new-password"
                                     placeholder="Create password"
                                     required>
 
                                 <button
                                     class="btn btn-outline-secondary"
                                     type="button"
-                                    id="togglePassword">
+                                    id="togglePassword"
+                                    aria-label="Toggle password visibility">
 
                                     <i class="fa-solid fa-eye"></i>
 
@@ -100,12 +107,14 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label">Confirm Password</label>
+                            <label class="form-label" for="confirmPassword">Confirm Password</label>
 
                             <input
                                 type="password"
                                 class="form-control"
                                 id="confirmPassword"
+                                minlength="8"
+                                autocomplete="new-password"
                                 placeholder="Confirm password"
                                 required>
 

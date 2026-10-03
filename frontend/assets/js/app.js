@@ -3,6 +3,8 @@
     app.js
 =========================================================*/
 
+(() => {
+
 /*=========================
         PAGE LOADER
 =========================*/
@@ -29,13 +31,17 @@ window.addEventListener("load", () => {
         AOS
 =========================*/
 
-AOS.init({
+if (typeof AOS !== "undefined") {
 
-    duration: 1000,
-    once: true,
-    easing: "ease-in-out"
+    AOS.init({
 
-});
+        duration: 1000,
+        once: true,
+        easing: "ease-in-out"
+
+    });
+
+}
 
 /*=========================
       STICKY NAVBAR
@@ -338,38 +344,6 @@ if (contactForm) {
 }
 
 /*=========================
-      TYPEWRITER EFFECT
-=========================*/
-
-const title = document.querySelector(".hero-section h1 span");
-
-if (title) {
-
-    const text = title.innerText;
-
-    title.innerText = "";
-
-    let i = 0;
-
-    function typing() {
-
-        if (i < text.length) {
-
-            title.innerHTML += text.charAt(i);
-
-            i++;
-
-            setTimeout(typing, 80);
-
-        }
-
-    }
-
-    typing();
-
-}
-
-/*=========================
         FOOTER YEAR
 =========================*/
 
@@ -406,7 +380,7 @@ if (savedTheme) {
 
 }
 
-if (themeToggle) {
+if (themeToggle && !document.querySelector(".sidebar")) {
 
     themeToggle.addEventListener("click", () => {
 
@@ -626,17 +600,11 @@ if (loginForm) {
 }
 
 const username = localStorage.getItem("username") || "Student";
-document.getElementById("dashboardUser").textContent = username;
+const dashboardUser = document.getElementById("dashboardUser");
 
-if (username) {
+if (dashboardUser) {
 
-    const savedUser = localStorage.getItem("username");
-
-    if (savedUser) {
-
-        username.textContent = savedUser;
-
-    }
+    dashboardUser.textContent = username;
 
 }
 
@@ -667,3 +635,5 @@ document.querySelectorAll(".glass-card").forEach(card => {
 
 console.log("%cSmart AI Study Planner Ready 🚀",
     "color:#22c55e;font-size:18px;font-weight:bold;");
+
+})();

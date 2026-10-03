@@ -28,7 +28,7 @@ window.addEventListener("load", () => {
                 LOAD USER NAME
 ========================================================== */
 
-const user = JSON.parse(localStorage.getItem("studyPlannerUser"));
+const user = window.StudyPlanner.storage.read("studyPlannerUser", null);
 
 if (user) {
 
@@ -58,7 +58,8 @@ const startDate = document.getElementById("startDate");
 
 if (startDate) {
 
-    const today = new Date().toISOString().split("T")[0];
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
     startDate.value = today;
 
@@ -71,6 +72,8 @@ if (startDate) {
 const plannerForm = document.getElementById("plannerForm");
 
 const planOutput = document.getElementById("planOutput");
+const escapeHtml = window.StudyPlanner.escapeHtml;
+let planGenerated = false;
 
 /* ==========================================================
                 GENERATE AI PLAN
@@ -82,9 +85,9 @@ if (plannerForm) {
 
         e.preventDefault();
 
-        const name = document.getElementById("studentName").value;
+        const name = document.getElementById("studentName").value.trim();
 
-        const subject = document.getElementById("subject").value;
+        const subject = document.getElementById("subject").value.trim();
 
         const goal = document.getElementById("studyGoal").value;
 
@@ -94,6 +97,18 @@ if (plannerForm) {
 
         const breakTime = document.getElementById("breakTime").value;
 
+        const startDateValue = document.getElementById("startDate").value;
+
+        const endDateValue = document.getElementById("endDate").value;
+
+        if (!subject || !name || Number(hours) < 1 || Number(hours) > 12 || endDateValue < startDateValue) {
+
+            window.StudyPlanner.notify("Check the name, subject, hours, and date range.", "error");
+
+            return;
+
+        }
+
         planOutput.innerHTML = `
         
         <div class="alert alert-success">
@@ -102,17 +117,19 @@ if (plannerForm) {
 
             <hr>
 
-            <p><strong>Student :</strong> ${name}</p>
+            <p><strong>Student:</strong> ${escapeHtml(name)}</p>
 
-            <p><strong>Subject :</strong> ${subject}</p>
+            <p><strong>Subject:</strong> ${escapeHtml(subject)}</p>
 
-            <p><strong>Goal :</strong> ${goal}</p>
+            <p><strong>Goal:</strong> ${escapeHtml(goal)}</p>
 
-            <p><strong>Study Time :</strong> ${hours} Hours / Day</p>
+            <p><strong>Study Time:</strong> ${escapeHtml(hours)} Hours / Day</p>
 
-            <p><strong>Difficulty :</strong> ${difficulty}</p>
+            <p><strong>Difficulty:</strong> ${escapeHtml(difficulty)}</p>
 
-            <p><strong>Break :</strong> ${breakTime}</p>
+            <p><strong>Break:</strong> ${escapeHtml(breakTime)}</p>
+
+            <p><strong>Schedule:</strong> ${escapeHtml(startDateValue)} to ${escapeHtml(endDateValue)}</p>
 
             <hr>
 
@@ -126,6 +143,9 @@ if (plannerForm) {
         </div>
 
         `;
+
+        planGenerated = true;
+        window.StudyPlanner.notify("Your study plan is ready. This planner uses your inputs locally.");
 
     });
 
@@ -141,17 +161,16 @@ if (savePlanBtn) {
 
     savePlanBtn.addEventListener("click", () => {
 
-        if (!planOutput.innerHTML.trim()) {
+        if (!planGenerated) {
 
-            alert("Please generate a study plan first.");
+            window.StudyPlanner.notify("Generate a study plan before saving it.", "error");
 
             return;
 
         }
 
-        localStorage.setItem("savedStudyPlan", planOutput.innerHTML);
-
-        alert("✅ Study Plan Saved Successfully!");
+        localStorage.setItem("savedStudyPlan", planOutput.innerText);
+        window.StudyPlanner.notify("Study plan saved.");
 
     });
 
@@ -165,7 +184,8 @@ const savedPlan = localStorage.getItem("savedStudyPlan");
 
 if (savedPlan) {
 
-    planOutput.innerHTML = savedPlan;
+    planOutput.textContent = new DOMParser().parseFromString(savedPlan, "text/html").body.textContent;
+    planGenerated = true;
 
 }
 
@@ -181,9 +201,9 @@ if (downloadBtn) {
 
         const content = planOutput.innerText;
 
-        if (!content.trim()) {
+        if (!planGenerated || !content.trim()) {
 
-            alert("Please generate a study plan first.");
+            window.StudyPlanner.notify("Generate a study plan before downloading it.", "error");
 
             return;
 
@@ -229,70 +249,6 @@ if (plannerForm) {
 }
 
 /* ==========================================================
-                DARK MODE
-========================================================== */
-
-const themeToggle = document.getElementById("themeToggle");
-
-if (themeToggle) {
-
-    themeToggle.addEventListener("click", () => {
-
-        document.body.classList.toggle("dark-mode");
-
-        const isDark = document.body.classList.contains("dark-mode");
-
-        localStorage.setItem("plannerTheme", isDark ? "dark" : "light");
-
-    });
-
-}
-
-/* ==========================================================
-                LOAD SAVED THEME
-========================================================== */
-
-const savedTheme = localStorage.getItem("plannerTheme");
-
-if (savedTheme === "dark") {
-
-    document.body.classList.add("dark-mode");
-
-}
-
-/* ==========================================================
-                FORM VALIDATION
-========================================================== */
-
-plannerForm?.addEventListener("submit", function (e) {
-
-    const subject = document.getElementById("subject").value.trim();
-
-    const hours = parseInt(document.getElementById("studyHours").value);
-
-    if (subject === "") {
-
-        alert("Please enter a subject.");
-
-        e.preventDefault();
-
-        return;
-
-    }
-
-    if (isNaN(hours) || hours < 1 || hours > 12) {
-
-        alert("Study hours must be between 1 and 12.");
-
-        e.preventDefault();
-
-        return;
-
-    }
-
-});
-
-/* ==========================================================
                 CHARACTER COUNTER (SUBJECT)
 ========================================================== */
 
@@ -336,7 +292,8 @@ if (plannerForm) {
 
         plannerForm.reset();
 
-        const today = new Date().toISOString().split("T")[0];
+        const now = new Date();
+        const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
         if (startDate) {
 
@@ -357,6 +314,8 @@ if (plannerForm) {
             </div>
 
         `;
+
+        planGenerated = false;
 
     });
 
@@ -396,7 +355,7 @@ plannerForm?.addEventListener("input", () => {
                 LOAD LAST FORM DATA
 ========================================================== */
 
-const lastData = JSON.parse(localStorage.getItem("plannerFormData"));
+const lastData = window.StudyPlanner.storage.read("plannerFormData", null);
 
 if (lastData) {
 
@@ -476,6 +435,8 @@ const endDateInput = document.getElementById("endDate");
 
 if (startDate && endDateInput) {
 
+    endDateInput.min = startDate.value;
+
     startDate.addEventListener("change", () => {
 
         endDateInput.min = startDate.value;
@@ -487,46 +448,6 @@ if (startDate && endDateInput) {
 /* ==========================================================
                 SUCCESS MESSAGE
 ========================================================== */
-
-function showSuccess(message) {
-
-    const toast = document.createElement("div");
-
-    toast.className = "alert alert-success position-fixed";
-
-    toast.style.top = "20px";
-
-    toast.style.right = "20px";
-
-    toast.style.zIndex = "9999";
-
-    toast.innerHTML = `
-
-        <i class="fa-solid fa-circle-check"></i>
-
-        ${message}
-
-    `;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-
-        toast.remove();
-
-    }, 3000);
-
-}
-
-if (savePlanBtn) {
-
-    savePlanBtn.addEventListener("click", () => {
-
-        showSuccess("Study Plan Saved Successfully!");
-
-    });
-
-}
 
 /* ==========================================================
                 CONSOLE MESSAGE

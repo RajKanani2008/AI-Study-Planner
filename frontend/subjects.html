@@ -22,9 +22,6 @@
                     FAVICON
     =========================================== -->
 
-    <link rel="icon"
-          href="assets/images/logo.png">
-
     <!-- ==========================================
                     GOOGLE FONT
     =========================================== -->
@@ -73,6 +70,9 @@
     <link rel="stylesheet"
           href="assets/css/subjects.css">
 
+        <link rel="stylesheet"
+            href="assets/css/workspace.css">
+
 </head>
 
 <body>
@@ -95,9 +95,7 @@
 
     <div class="logo">
 
-        <img src="assets/images/dashboard-ai.png"
-             class="img-fluid"
-             alt="Logo">
+        <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
 
         <h3>
 
@@ -195,6 +193,30 @@
 
         <li>
 
+            <a href="notifications.html">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <span>Notifications</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="pomodoro.html">
+
+                <i class="fa-solid fa-stopwatch"></i>
+
+                <span>Focus timer</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
             <a href="profile.html">
 
                 <i class="fa-solid fa-user"></i>
@@ -254,10 +276,7 @@
 
         </button>
 
-        <div class="user-profile">
-
-            <img src="assets/images/dashboard-ai.png"
-                 alt="User">
+        <a class="user-profile" href="profile.html">
 
             <div>
 
@@ -275,7 +294,7 @@
 
             </div>
 
-        </div>
+        </a>
 
     </div>
 
@@ -983,19 +1002,17 @@
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
-<script src="assets/js/app.js"></script>
+<script src="assets/js/workspace.js"></script>
 
 <script src="assets/js/subjects.js"></script>
 
 <script>
 
-AOS.init({
+if (typeof AOS !== "undefined") {
 
-    duration:1000,
+    AOS.init({ duration: 700, once: true });
 
-    once:true
-
-});
+}
 
 </script>
 
