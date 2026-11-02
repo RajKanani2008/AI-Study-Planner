@@ -68,6 +68,11 @@
 						<button class="btn btn-outline-secondary task-filter" type="button" data-filter="completed" aria-pressed="false">Done</button>
 					</div>
 				</div>
+				<div class="app-grid app-grid-2 mb-3">
+					<div class="search-box w-100"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input id="taskSearch" type="search" aria-label="Search tasks" placeholder="Search title or subject"></div>
+					<label class="visually-hidden" for="taskSort">Sort tasks</label>
+					<select id="taskSort" class="form-select" aria-label="Sort tasks"><option value="due">Sort by due date</option><option value="priority">Sort by priority</option><option value="title">Sort by title</option></select>
+				</div>
 				<div id="tasksList" class="app-grid" aria-live="polite"></div>
 			</section>
 		</div>

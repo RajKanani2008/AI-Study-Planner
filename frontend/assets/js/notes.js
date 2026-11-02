@@ -13,8 +13,8 @@
     let notes = storage.read('studyPlannerNotes', []);
     const legacyQuickNote = localStorage.getItem('studyNotes');
     if (legacyQuickNote?.trim() && !notes.some(note => note.id === 'dashboard-quick-note')) {
-        notes.unshift({ id: 'dashboard-quick-note', title: 'Quick notes', subject: 'General', body: legacyQuickNote, pinned: false, updatedAt: new Date().toISOString() });
-        storage.write('studyPlannerNotes', notes);
+            notes.unshift({ id: 'dashboard-quick-note', title: 'Quick notes', subject: 'General', body: legacyQuickNote, pinned: false, updatedAt: new Date().toISOString() });
+            storage.write('studyPlannerNotes', notes);
     }
 
     const render = () => {
@@ -61,6 +61,7 @@
         };
         notes = id ? notes.map(note => note.id === id ? entry : note) : [entry, ...notes];
         storage.write('studyPlannerNotes', notes);
+        if (entry.id === 'dashboard-quick-note') localStorage.setItem('studyNotes', body);
         resetForm();
         render();
         notify(id ? 'Note updated.' : 'Note saved.');
@@ -76,6 +77,7 @@
             note.pinned = !note.pinned;
         } else if (event.target.closest('.note-delete')) {
             notes = notes.filter(item => item.id !== note.id);
+            if (note.id === 'dashboard-quick-note') localStorage.removeItem('studyNotes');
             notify('Note deleted.');
         } else if (event.target.closest('.note-edit')) {
             noteId.value = note.id;
@@ -97,4 +99,8 @@
 
     notes.sort((first, second) => Number(second.pinned) - Number(first.pinned));
     render();
+    storage.subscribe('studyPlannerNotes', value => {
+        notes = value.sort((first, second) => Number(second.pinned) - Number(first.pinned));
+        render();
+    });
 })();

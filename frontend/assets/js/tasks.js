@@ -8,6 +8,8 @@
     const idInput = document.getElementById('taskId');
     const submitButton = document.getElementById('taskSubmit');
     const cancelEdit = document.getElementById('taskCancelEdit');
+    const searchInput = document.getElementById('taskSearch');
+    const sortSelect = document.getElementById('taskSort');
     let tasks = storage.read('studyPlannerTasks', []);
     let filter = 'all';
 
@@ -21,11 +23,25 @@
     dateInput.min = localDate(new Date());
 
     const render = () => {
-        const visible = tasks.filter(task => filter === 'all' || (filter === 'completed' ? task.completed : !task.completed));
+        const searchTerm = searchInput.value.trim().toLocaleLowerCase();
+        const visible = tasks.filter(task => {
+            const matchesFilter = filter === 'all' || (filter === 'completed' ? task.completed : !task.completed);
+            const matchesSearch = `${task.title} ${task.subject || ''}`.toLocaleLowerCase().includes(searchTerm);
+            return matchesFilter && matchesSearch;
+        });
+        visible.sort((first, second) => {
+            if (sortSelect.value === 'priority') {
+                const priority = { high: 0, normal: 1, low: 2 };
+                return (priority[first.priority] ?? 1) - (priority[second.priority] ?? 1)
+                    || (first.dueDate || '').localeCompare(second.dueDate || '');
+            }
+            if (sortSelect.value === 'title') return first.title.localeCompare(second.title);
+            return (first.dueDate || '9999-12-31').localeCompare(second.dueDate || '9999-12-31');
+        });
         const pending = tasks.filter(task => !task.completed).length;
         count.textContent = `${pending} open · ${tasks.length} total`;
         if (!visible.length) {
-            list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-list-check" aria-hidden="true"></i><strong>${filter === 'completed' ? 'No completed tasks yet' : filter === 'active' ? 'You are all caught up' : 'Your task list is clear'}</strong><span>${filter === 'all' ? 'Add a task to start planning your study week.' : 'Try another filter or add a task.'}</span></div>`;
+            list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-list-check" aria-hidden="true"></i><strong>${searchTerm ? 'No tasks match your search' : filter === 'completed' ? 'No completed tasks yet' : filter === 'active' ? 'You are all caught up' : 'Your task list is clear'}</strong><span>${searchTerm || filter !== 'all' ? 'Try another search or filter, or add a task.' : 'Add a task to start planning your study week.'}</span></div>`;
             return;
         }
 
@@ -79,6 +95,8 @@
     });
 
     cancelEdit.addEventListener('click', resetForm);
+    searchInput.addEventListener('input', render);
+    sortSelect.addEventListener('change', render);
     document.querySelectorAll('.task-filter').forEach(button => button.addEventListener('click', () => {
         filter = button.dataset.filter;
         document.querySelectorAll('.task-filter').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
@@ -103,6 +121,7 @@
             idInput.value = task.id;
             titleInput.value = task.title;
             document.getElementById('taskSubject').value = task.subject || '';
+            dateInput.min = '';
             dateInput.value = task.dueDate || '';
             document.getElementById('taskPriority').value = task.priority || 'normal';
             submitButton.innerHTML = '<i class="fa-solid fa-check me-2" aria-hidden="true"></i>Save changes';
@@ -112,4 +131,8 @@
     });
 
     render();
+    storage.subscribe('studyPlannerTasks', value => {
+        tasks = value;
+        render();
+    });
 })();

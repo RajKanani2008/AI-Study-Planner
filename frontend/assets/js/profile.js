@@ -11,9 +11,13 @@
     document.getElementById('profileEmail').value = user.email || localStorage.getItem('userEmail') || '';
     programInput.value = profile.program || '';
     goalInput.value = profile.weeklyGoal || 10;
-    document.getElementById('profileSubjects').textContent = String(storage.read('studyPlannerSubjects', []).length);
-    document.getElementById('profileTasks').textContent = String(storage.read('studyPlannerTasks', []).filter(task => !task.completed).length);
-    document.getElementById('profileNotes').textContent = String(storage.read('studyPlannerNotes', []).length);
+    const renderStats = () => {
+        document.getElementById('profileSubjects').textContent = String(storage.read('studyPlannerSubjects', []).length);
+        document.getElementById('profileTasks').textContent = String(storage.read('studyPlannerTasks', []).filter(task => !task.completed).length);
+        document.getElementById('profileNotes').textContent = String(storage.read('studyPlannerNotes', []).length);
+    };
+    renderStats();
+    ['studyPlannerSubjects', 'studyPlannerTasks', 'studyPlannerNotes'].forEach(key => storage.subscribe(key, renderStats));
 
     form.addEventListener('submit', event => {
         event.preventDefault();

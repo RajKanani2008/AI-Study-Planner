@@ -21,6 +21,9 @@
         updateThemeButtons();
     }));
     document.getElementById('themeToggle').addEventListener('click', () => window.setTimeout(updateThemeButtons, 0));
+    window.addEventListener('storage', event => {
+        if (event.key === 'theme' || event.key === 'plannerTheme') updateThemeButtons();
+    });
 
     form.addEventListener('submit', event => {
         event.preventDefault();
@@ -29,5 +32,10 @@
         applyMotionPreference(next.reduceMotion);
         notify('Preferences saved.');
     });
+    storage.subscribe('studyPlannerSettings', value => {
+        reduceMotion.checked = Boolean(value.reduceMotion);
+        weekStart.value = value.weekStart === 'monday' ? 'monday' : 'sunday';
+        applyMotionPreference(reduceMotion.checked);
+    }, {});
     updateThemeButtons();
 })();

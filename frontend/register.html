@@ -43,6 +43,9 @@
                         <p class="text-muted">
                             Join Smart AI Study Planner
                         </p>
+                        <p class="auth-demo-notice" role="note">
+                            Browser-only demo account. Authentication is not connected to a server; do not use a real or reused password.
+                        </p>
 
                     </div>
 
@@ -102,6 +105,7 @@
                                 </button>
 
                             </div>
+                            <small class="calendar-subtitle d-block mt-2" id="passwordStrength" aria-live="polite">Use at least 8 characters.</small>
 
                         </div>
 
@@ -130,6 +134,8 @@
 
                     </form>
 
+                    <p class="login-status" id="registerStatus" role="status" aria-live="polite"></p>
+
                     <div class="text-center mt-4">
 
                         Already have an account?
@@ -152,6 +158,7 @@
 
 </section>
 
+<script src="./assets/js/auth.js"></script>
 <script src="./assets/js/register.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

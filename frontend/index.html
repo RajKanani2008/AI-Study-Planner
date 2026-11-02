@@ -77,11 +77,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#about">About</a>
+                    <a class="nav-link" href="#dashboard">About</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#features">Features</a>
+                    <a class="nav-link" href="#dashboard">Features</a>
                 </li>
 
                 <li class="nav-item">
@@ -104,6 +104,7 @@
             <a href="login.html" class="btn btn-primary ms-3">
     Login
 </a>
+            <a href="register.html" class="btn btn-outline-light ms-2">Register</a>
 
             <button class="btn btn-outline-light ms-3"
                 id="themeToggle">
@@ -133,32 +134,26 @@
                 data-aos="fade-right">
 
                 <span class="badge bg-primary mb-3">
-                    AI Powered Learning
+                    Your study workspace
                 </span>
 
                 <h1 class="display-4 fw-bold">
 
-                    Study Smarter With
-
-                    <span class="text-primary">
-
-                        Artificial Intelligence
-
-                    </span>
+                    Make Every Study Session Count
 
                 </h1>
 
                 <p class="lead mt-4">
 
-                    Plan your study routine, manage notes,
-                    track progress, stay productive and
-                    achieve your goals using AI.
+                    Plan your routine, organize tasks and notes,
+                    and track study sessions in one focused workspace.
 
                 </p>
+                <p class="landing-demo-note">This preview saves planner data in your browser. Live AI and server accounts are not connected.</p>
 
                 <div class="mt-4">
 
-                    <a href="#features"
+                    <a href="login.html"
                         class="btn btn-primary btn-lg me-3">
 
                         Get Started
@@ -179,8 +174,12 @@
             <div class="col-lg-6 text-center"
                 data-aos="fade-left">
 
-                <i class="fa-solid fa-robot text-primary"
-                    style="font-size:260px;"></i>
+                <div class="neural-scene" aria-hidden="true">
+                    <canvas class="neural-canvas" data-neural-scene></canvas>
+                    <span class="neural-orbit"></span>
+                    <span class="neural-orbit"></span>
+                    <span class="neural-core"><i class="fa-solid fa-brain"></i></span>
+                </div>
 
             </div>
 
@@ -191,7 +190,7 @@
 </section>
 
 <!-- =========================
-        AI TOOLS
+        STUDY TOOLS
 ========================== -->
 
 <section id="dashboard" class="py-5 bg-light">
@@ -201,7 +200,7 @@
         <div class="text-center mb-5">
 
             <h2 class="fw-bold">
-                AI Powered Dashboard
+                Your Study Dashboard
             </h2>
 
             <p class="text-muted">
@@ -216,12 +215,12 @@
 
                 <div class="dashboard-card p-4 rounded shadow h-100 text-center">
 
-                    <i class="fa-solid fa-robot fa-3x text-primary mb-3"></i>
+                    <i class="fa-solid fa-calendar-check fa-3x text-primary mb-3"></i>
 
-                    <h4>AI Planner</h4>
+                    <h4>Study Schedule</h4>
 
                     <p>
-                        Generate smart study plans using Artificial Intelligence.
+                        Build a simple weekly draft from your subjects and available hours.
                     </p>
 
                     <a href="planner.html" class="btn btn-primary ai-btn">
@@ -293,7 +292,7 @@
             </h2>
 
             <p class="text-muted">
-                Choose your perfect plan.
+                Feature preview only. Checkout and subscription plans are not configured.
             </p>
 
         </div>
@@ -312,16 +311,16 @@
 
                     <ul class="list-unstyled mt-4">
 
-                        <li>✔ AI Planner</li>
+                        <li>✔ Study schedule drafts</li>
                         <li>✔ Notes</li>
                         <li>✔ Tasks</li>
                         <li>✔ Calendar</li>
 
                     </ul>
 
-                    <button class="btn btn-primary mt-3 w-100">
+                    <a class="btn btn-primary mt-3 w-100" href="login.html">
                         Get Started
-                    </button>
+                    </a>
 
                 </div>
 
@@ -340,20 +339,20 @@
                     </h3>
 
                     <h1 class="text-primary">
-                        ₹299
+                        Not available
                     </h1>
 
                     <ul class="list-unstyled mt-4">
 
-                        <li>✔ Unlimited AI</li>
+                        <li>✔ Extended study tools</li>
                         <li>✔ Analytics</li>
                         <li>✔ Dashboard</li>
                         <li>✔ Priority Support</li>
 
                     </ul>
 
-                    <button class="btn btn-primary mt-3 w-100">
-                        Buy Now
+                    <button class="btn btn-primary mt-3 w-100" type="button" disabled title="Checkout is not configured">
+                        Checkout unavailable
                     </button>
 
                 </div>
@@ -374,13 +373,13 @@
 
                         <li>✔ College Access</li>
                         <li>✔ Team Dashboard</li>
-                        <li>✔ AI Reports</li>
+                        <li>✔ Shared reports</li>
                         <li>✔ Premium Support</li>
 
                     </ul>
 
-                    <button class="btn btn-dark mt-3 w-100">
-                        Contact
+                    <button class="btn btn-dark mt-3 w-100" type="button" disabled title="Sales contact is not configured">
+                        Contact unavailable
                     </button>
 
                 </div>
@@ -394,7 +393,7 @@
 </section>
 
 <!-- =========================
-        TESTIMONIALS
+        STUDY FEATURES
 ========================== -->
 
 <section class="py-5 bg-light">
@@ -404,7 +403,7 @@
         <div class="text-center mb-5">
 
             <h2 class="fw-bold">
-                Student Reviews
+                Made for Focused Study
             </h2>
 
         </div>
@@ -415,15 +414,9 @@
 
                 <div class="glass-card p-4 rounded shadow">
 
-                    ⭐⭐⭐⭐⭐
-
-                    <p class="mt-3">
-                        Best study planner I have ever used.
-                    </p>
-
-                    <h5 class="mb-0">
-                        Rahul Patel
-                    </h5>
+                    <i class="fa-solid fa-list-check fa-2x text-primary" aria-hidden="true"></i>
+                    <h5 class="mt-3">Keep plans together</h5>
+                    <p class="mb-0">Organize study tasks, subjects, notes, and due dates in one workspace.</p>
 
                 </div>
 
@@ -433,15 +426,9 @@
 
                 <div class="glass-card p-4 rounded shadow">
 
-                    ⭐⭐⭐⭐⭐
-
-                    <p class="mt-3">
-                        AI planner helped me manage my exams.
-                    </p>
-
-                    <h5 class="mb-0">
-                        Priya Shah
-                    </h5>
+                    <i class="fa-solid fa-stopwatch fa-2x text-primary" aria-hidden="true"></i>
+                    <h5 class="mt-3">Build a focus habit</h5>
+                    <p class="mb-0">Use a simple Pomodoro timer and track completed focus sessions locally.</p>
 
                 </div>
 
@@ -451,15 +438,9 @@
 
                 <div class="glass-card p-4 rounded shadow">
 
-                    ⭐⭐⭐⭐⭐
-
-                    <p class="mt-3">
-                        Amazing dashboard and beautiful UI.
-                    </p>
-
-                    <h5 class="mb-0">
-                        Meet Patel
-                    </h5>
+                    <i class="fa-solid fa-chart-line fa-2x text-primary" aria-hidden="true"></i>
+                    <h5 class="mt-3">See your own progress</h5>
+                    <p class="mb-0">Review task completion and focus history saved in this browser.</p>
 
                 </div>
 
@@ -584,7 +565,7 @@
                         data-bs-toggle="collapse"
                         data-bs-target="#faq2">
 
-                        Can AI generate study plans?
+                        Does this version use a live AI service?
 
                     </button>
 
@@ -596,7 +577,7 @@
 
                     <div class="accordion-body">
 
-                        Yes, AI can generate personalized study schedules.
+                        No. The current schedule preview uses simple browser-side rules; a live AI service is not configured.
 
                     </div>
 
@@ -720,7 +701,7 @@
         </h2>
 
         <p>
-            Get AI study tips and productivity updates.
+            Newsletter signup is not configured in this preview.
         </p>
 
         <form class="newsletter-form row justify-content-center mt-4">
@@ -768,7 +749,7 @@
 
                 <p>
 
-                    Study smarter with Artificial Intelligence.
+                    A browser-based workspace for study tasks and focus sessions.
 
                 </p>
 
@@ -778,7 +759,7 @@
 
                 <a href="#home" class="text-white me-3">Home</a>
 
-                <a href="#about" class="text-white me-3">About</a>
+                <a href="#dashboard" class="text-white me-3">About</a>
 
                <a href="login.html" class="btn btn-primary btn-lg me-3">
                           Get Started

@@ -5,6 +5,7 @@
 	const fields = {
 		name: document.getElementById('subjectName'),
 		teacher: document.getElementById('teacherName'),
+		description: document.getElementById('subjectDescription'),
 		total: document.getElementById('totalChapters'),
 		completed: document.getElementById('completedChapters'),
 		exam: document.getElementById('examDate'),
@@ -13,6 +14,11 @@
 	const saveButton = form.querySelector('[type="submit"]');
 	let subjects = storage.read('studyPlannerSubjects', []);
 	let editingId = null;
+	const dateKey = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+	const dayNumber = value => {
+		const [year, month, day] = value.split('-').map(Number);
+		return Date.UTC(year, month - 1, day) / 86400000;
+	};
 	const cancelButton = document.createElement('button');
 	cancelButton.className = 'btn btn-outline-secondary ms-2 d-none';
 	cancelButton.type = 'button';
@@ -27,6 +33,7 @@
 
 	fields.total.addEventListener('input', validateChapters);
 	fields.completed.addEventListener('input', validateChapters);
+	fields.name.addEventListener('input', () => fields.name.setCustomValidity(''));
 
 	const emptyMessage = '<div class="col-12"><div class="empty-state"><i class="fa-solid fa-book-open" aria-hidden="true"></i><strong>No subjects yet</strong><span>Add a subject to start tracking chapters and exam dates.</span></div></div>';
 	const render = () => {
@@ -38,7 +45,7 @@
 				const complete = Math.min(total, Math.max(0, Number(subject.completedChapters) || 0));
 				const percent = total ? Math.round(complete / total * 100) : 0;
 				const exam = subject.examDate ? new Date(`${subject.examDate}T00:00:00`).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Not set';
-				return `<div class="col-xl-4 col-md-6"><article class="subject-card" data-subject-id="${escapeHtml(subject.id)}"><div class="d-flex align-items-start justify-content-between gap-2"><div><span class="metric-icon mb-3"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span><h4>${escapeHtml(subject.name)}</h4></div><span class="badge text-bg-success">${escapeHtml(subject.difficulty || 'Medium')}</span></div><p>${escapeHtml(subject.teacher || 'No instructor added')}</p><div class="d-flex justify-content-between small"><span>Chapter progress</span><span>${complete}/${total} · ${percent}%</span></div><div class="progress" role="progressbar" aria-label="${escapeHtml(subject.name)} chapter progress" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:${percent}%"></div></div><p class="small mt-3 mb-0">Exam date: ${escapeHtml(exam)}</p><div class="subject-actions"><button class="btn btn-outline-primary subject-edit" type="button"><i class="fa-solid fa-pen me-1" aria-hidden="true"></i>Edit</button><button class="btn btn-outline-danger subject-delete" type="button"><i class="fa-solid fa-trash me-1" aria-hidden="true"></i>Delete</button></div></article></div>`;
+				return `<div class="col-xl-4 col-md-6"><article class="subject-card" data-subject-id="${escapeHtml(subject.id)}"><div class="d-flex align-items-start justify-content-between gap-2"><div><span class="metric-icon mb-3"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span><h4>${escapeHtml(subject.name)}</h4></div><span class="badge text-bg-success">${escapeHtml(subject.difficulty || 'Medium')}</span></div><p>${escapeHtml(subject.teacher || 'No instructor added')}</p>${subject.description ? `<p>${escapeHtml(subject.description)}</p>` : ''}<div class="d-flex justify-content-between small"><span>Chapter progress</span><span>${complete}/${total} · ${percent}%</span></div><div class="progress" role="progressbar" aria-label="${escapeHtml(subject.name)} chapter progress" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:${percent}%"></div></div><p class="small mt-3 mb-0">Exam date: ${escapeHtml(exam)}</p><div class="subject-actions"><button class="btn btn-outline-primary subject-edit" type="button"><i class="fa-solid fa-pen me-1" aria-hidden="true"></i>Edit</button><button class="btn btn-outline-danger subject-delete" type="button"><i class="fa-solid fa-trash me-1" aria-hidden="true"></i>Delete</button></div></article></div>`;
 			}).join('');
 		}
 		renderSummary();
@@ -76,7 +83,7 @@
 			const upcoming = subjects.filter(subject => subject.examDate).sort((first, second) => first.examDate.localeCompare(second.examDate));
 			examBody.innerHTML = upcoming.length ? upcoming.map(subject => {
 				const due = new Date(`${subject.examDate}T00:00:00`);
-				const days = Math.ceil((due - new Date(new Date().setHours(0, 0, 0, 0))) / 86400000);
+				const days = dayNumber(subject.examDate) - dayNumber(dateKey(new Date()));
 				const label = days < 0 ? 'Date passed' : days <= 7 ? 'Coming up' : 'Scheduled';
 				const color = days < 0 ? 'secondary' : days <= 7 ? 'warning text-dark' : 'success';
 				return `<tr><td>${escapeHtml(subject.name)}</td><td>${escapeHtml(due.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }))}</td><td><span class="badge text-bg-${color}">${label}</span></td></tr>`;
@@ -96,6 +103,10 @@
 	form.addEventListener('submit', event => {
 		event.preventDefault();
 		validateChapters();
+		const normalizedName = fields.name.value.trim().toLocaleLowerCase();
+		const duplicate = subjects.some(subject => subject.id !== editingId
+			&& subject.name.trim().toLocaleLowerCase() === normalizedName);
+		fields.name.setCustomValidity(duplicate ? 'A subject with this name already exists.' : '');
 		if (!form.reportValidity()) return;
 		const name = fields.name.value.trim();
 		const total = Number(fields.total.value);
@@ -104,6 +115,7 @@
 			id: editingId || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
 			name,
 			teacher: fields.teacher.value.trim(),
+			description: fields.description.value.trim(),
 			totalChapters: total,
 			completedChapters: completed,
 			examDate: fields.exam.value,
@@ -132,6 +144,7 @@
 			editingId = subject.id;
 			fields.name.value = subject.name;
 			fields.teacher.value = subject.teacher || '';
+			fields.description.value = subject.description || '';
 			fields.total.value = subject.totalChapters;
 			fields.completed.value = subject.completedChapters;
 			fields.exam.value = subject.examDate || '';
@@ -143,4 +156,8 @@
 	});
 
 	render();
+	storage.subscribe('studyPlannerSubjects', value => {
+		subjects = value;
+		render();
+	});
 })();

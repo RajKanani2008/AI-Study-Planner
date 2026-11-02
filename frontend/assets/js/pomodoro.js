@@ -42,11 +42,18 @@
         caption.textContent = mode === 'focus' ? 'Focus session complete' : 'Break complete';
         status.textContent = mode === 'focus' ? 'Nice work. Take a short break before the next block.' : 'Break finished. Return when you feel ready.';
         if (mode === 'focus') {
-            const sessions = storage.read('studySessions', []);
-            sessions.push({ id: String(Date.now()), minutes: modes.focus, date: dateKey(new Date()), completedAt: new Date().toISOString() });
-            storage.write('studySessions', sessions);
-            renderToday();
-            notify('Focus session completed. Take a short break.', 'success');
+            try {
+                const completedAt = new Date();
+                const sessions = storage.read('studySessions', []);
+                sessions.push({ id: String(Date.now()), minutes: modes.focus, date: dateKey(completedAt), completedAt: completedAt.toISOString() });
+                storage.write('studySessions', sessions);
+                renderToday();
+                notify('Focus session completed. Take a short break.', 'success');
+            } catch (error) {
+                console.error('Unable to save the completed focus session.', error);
+                status.textContent = 'Focus session complete, but this browser could not save it.';
+                notify('Focus session completed, but it could not be saved.', 'error');
+            }
         } else {
             notify('Break complete. Ready for another block?');
         }
@@ -54,7 +61,7 @@
     };
 
     const startTimer = () => {
-        if (running) return;
+        if (running || remaining <= 0) return;
         running = true;
         caption.textContent = mode === 'focus' ? 'In a focus block' : 'Taking a break';
         status.textContent = 'Stay with the current block. You can pause whenever you need to.';

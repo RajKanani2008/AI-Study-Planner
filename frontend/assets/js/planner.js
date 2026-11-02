@@ -75,6 +75,56 @@ const planOutput = document.getElementById("planOutput");
 const escapeHtml = window.StudyPlanner.escapeHtml;
 let planGenerated = false;
 
+const renderSavedTaskData = () => {
+    const tasks = window.StudyPlanner.storage.read("studyPlannerTasks", []);
+    const subjects = window.StudyPlanner.storage.read("studyPlannerSubjects", []);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dateKey = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    const todayKey = dateKey(today);
+    const todayBody = document.getElementById("plannerTodaySchedule");
+    const todayTasks = tasks.filter(task => task.dueDate === todayKey);
+    if (todayBody) {
+        todayBody.innerHTML = todayTasks.length
+            ? todayTasks.map(task => `<tr><td>Today</td><td>${escapeHtml(task.title)}</td><td>${escapeHtml(task.subject || "General")}</td><td>${task.completed ? "Completed" : escapeHtml(task.priority || "Open")}</td></tr>`).join("")
+            : '<tr><td colspan="4" class="text-center text-secondary">No tasks due today. Add dated tasks on the Tasks page.</td></tr>';
+    }
+
+    const upcomingBody = document.getElementById("plannerUpcomingTasks");
+    const limit = new Date(today);
+    limit.setDate(limit.getDate() + 7);
+    const upcomingTasks = tasks.filter(task => task.dueDate && task.dueDate >= todayKey && task.dueDate <= dateKey(limit))
+        .sort((first, second) => first.dueDate.localeCompare(second.dueDate));
+    if (upcomingBody) {
+        upcomingBody.innerHTML = upcomingTasks.length
+            ? upcomingTasks.map(task => {
+                const due = new Date(`${task.dueDate}T00:00:00`);
+                return `<tr><td>${escapeHtml(due.toLocaleDateString(undefined, { weekday: "long" }))}</td><td>${escapeHtml(task.title)}</td><td>${escapeHtml(due.toLocaleDateString(undefined, { month: "short", day: "numeric" }))}</td><td>${task.completed ? "Completed" : escapeHtml(task.priority || "Open")}</td></tr>`;
+            }).join("")
+            : '<tr><td colspan="4" class="text-center text-secondary">No tasks due in the next seven days.</td></tr>';
+    }
+
+    const subjectNames = [...new Set([
+        ...subjects.map(subject => subject.name).filter(Boolean),
+        ...tasks.map(task => task.subject).filter(Boolean)
+    ])];
+    const progress = document.getElementById("plannerSubjectProgress");
+    if (progress) {
+        progress.innerHTML = subjectNames.length
+            ? subjectNames.map(name => {
+                const matching = tasks.filter(task => task.subject === name);
+                const done = matching.filter(task => task.completed).length;
+                const percent = matching.length ? Math.round(done / matching.length * 100) : 0;
+                return `<div><div class="d-flex justify-content-between gap-3"><strong>${escapeHtml(name)}</strong><span>${done}/${matching.length} complete</span></div><div class="progress mt-2" role="progressbar" aria-label="${escapeHtml(name)} task completion" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:${percent}%"></div></div></div>`;
+            }).join("")
+            : '<div class="empty-state"><strong>No subject activity yet</strong><span>Complete tasks with a subject to track progress.</span></div>';
+    }
+};
+
+renderSavedTaskData();
+window.StudyPlanner.storage.subscribe("studyPlannerTasks", renderSavedTaskData);
+window.StudyPlanner.storage.subscribe("studyPlannerSubjects", renderSavedTaskData);
+
 /* ==========================================================
                 GENERATE AI PLAN
 ========================================================== */
@@ -113,7 +163,7 @@ if (plannerForm) {
         
         <div class="alert alert-success">
 
-            <h4>🤖 AI Study Plan Generated</h4>
+            <h4>Study plan draft</h4>
 
             <hr>
 
@@ -131,6 +181,8 @@ if (plannerForm) {
 
             <p><strong>Schedule:</strong> ${escapeHtml(startDateValue)} to ${escapeHtml(endDateValue)}</p>
 
+            <p>This browser-generated preview uses general tips; no live AI service was contacted.</p>
+
             <hr>
 
             <p>
@@ -145,7 +197,7 @@ if (plannerForm) {
         `;
 
         planGenerated = true;
-        window.StudyPlanner.notify("Your study plan is ready. This planner uses your inputs locally.");
+        window.StudyPlanner.notify("Browser-only study plan draft built from your inputs. No AI service was contacted.");
 
     });
 
@@ -215,7 +267,7 @@ if (downloadBtn) {
 
         link.href = URL.createObjectURL(blob);
 
-        link.download = "AI_Study_Plan.txt";
+        link.download = "study-plan.txt";
 
         link.click();
 
@@ -291,6 +343,8 @@ if (plannerForm) {
     resetBtn.addEventListener("click", () => {
 
         plannerForm.reset();
+        localStorage.removeItem("plannerFormData");
+        localStorage.removeItem("savedStudyPlan");
 
         const now = new Date();
         const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
@@ -308,8 +362,8 @@ if (plannerForm) {
                 <i class="fa-solid fa-circle-info"></i>
 
                 Fill out the form above and click
-                <strong>"Generate AI Study Plan"</strong>
-                to see your personalized study schedule.
+                <strong>"Build Local Study Plan"</strong>
+                to create a browser-only draft. A live AI service is not connected.
 
             </div>
 

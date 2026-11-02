@@ -3,13 +3,40 @@
         read(key, fallback) {
             try {
                 const value = localStorage.getItem(key);
-                return value === null ? fallback : JSON.parse(value);
-            } catch {
+                if (value === null) return fallback;
+                const parsed = JSON.parse(value);
+                const valid = Array.isArray(fallback)
+                    ? Array.isArray(parsed)
+                    : fallback !== null && typeof fallback === 'object'
+                        ? parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed)
+                        : typeof parsed === typeof fallback;
+                if (!valid) {
+                    console.warn(`Ignoring invalid browser data for "${key}".`);
+                    return fallback;
+                }
+                return parsed;
+            } catch (error) {
+                console.warn(`Unable to read browser data for "${key}".`, error);
                 return fallback;
             }
         },
         write(key, value) {
             localStorage.setItem(key, JSON.stringify(value));
+            window.dispatchEvent(new CustomEvent('studyplanner:storage', { detail: { key } }));
+        },
+        subscribe(key, callback, fallback = []) {
+            const handleChange = event => {
+                if (event.key === key || event.key === null) callback(storage.read(key, fallback));
+            };
+            const handleLocalChange = event => {
+                if (event.detail?.key === key) callback(storage.read(key, fallback));
+            };
+            window.addEventListener('storage', handleChange);
+            window.addEventListener('studyplanner:storage', handleLocalChange);
+            return () => {
+                window.removeEventListener('storage', handleChange);
+                window.removeEventListener('studyplanner:storage', handleLocalChange);
+            };
         }
     };
 
@@ -64,8 +91,13 @@
         applyTheme(normalized);
     };
 
-    const storedTheme = localStorage.getItem('theme') || localStorage.getItem('plannerTheme') || 'light';
+    const storedTheme = localStorage.getItem('theme') || localStorage.getItem('plannerTheme') || 'dark';
     applyTheme(storedTheme);
+    window.addEventListener('storage', event => {
+        if (event.key === 'theme' || event.key === 'plannerTheme') {
+            applyTheme(localStorage.getItem('theme') || localStorage.getItem('plannerTheme') || 'dark');
+        }
+    });
 
     const page = location.pathname.split('/').pop() || 'dashboard.html';
     const activePage = page === 'ai-planner.html' ? 'planner.html' : page;
@@ -78,15 +110,43 @@
     });
 
     const user = storage.read('studyPlannerUser', null);
+    if (user && typeof user === 'object' && Object.prototype.hasOwnProperty.call(user, 'password')) {
+        delete user.password;
+        storage.write('studyPlannerUser', user);
+    }
     const profile = storage.read('studyPlannerProfile', {});
     const name = profile.displayName || user?.fullName || localStorage.getItem('username') || 'Student';
-    document.body.classList.toggle('reduce-motion', Boolean(storage.read('studyPlannerSettings', {}).reduceMotion));
+    const applySettings = settings => document.body.classList.toggle('reduce-motion', Boolean(settings.reduceMotion));
+    applySettings(storage.read('studyPlannerSettings', {}));
+    storage.subscribe('studyPlannerSettings', applySettings, {});
     document.querySelectorAll('#dashboardUser, #welcomeUser, [data-user-name]').forEach(element => {
         element.textContent = name;
     });
 
     let sidebar = document.querySelector('.sidebar');
     const header = document.querySelector('.dashboard-navbar, .topbar');
+    if (header && !sessionStorage.getItem('studyPlannerDemoNoticeDismissed')) {
+        const notice = document.createElement('aside');
+        notice.className = 'integration-notice';
+        notice.setAttribute('role', 'note');
+        const noticeIcon = document.createElement('i');
+        noticeIcon.className = 'fa-solid fa-circle-info';
+        noticeIcon.setAttribute('aria-hidden', 'true');
+        const noticeCopy = document.createElement('p');
+        noticeCopy.innerHTML = '<strong>Browser-only demo mode</strong><span>Study data stays on this device. A server, database, and live AI service are not connected.</span>';
+        const dismiss = document.createElement('button');
+        dismiss.className = 'icon-btn';
+        dismiss.type = 'button';
+        dismiss.setAttribute('aria-label', 'Dismiss demo mode notice');
+        dismiss.innerHTML = '<i class="fa-solid fa-xmark" aria-hidden="true"></i>';
+        dismiss.addEventListener('click', () => {
+            sessionStorage.setItem('studyPlannerDemoNoticeDismissed', 'true');
+            notice.remove();
+        });
+        notice.append(noticeIcon, noticeCopy, dismiss);
+        header.after(notice);
+    }
+
     let leftSection = header?.querySelector('.left-section');
     if (!leftSection && header?.classList.contains('topbar')) {
         leftSection = header.firstElementChild;
@@ -163,4 +223,10 @@
     });
 
     window.StudyPlanner = { storage, escapeHtml, notify, setTheme };
+
+    if (document.querySelector('canvas[data-neural-scene]')) {
+        import('./experience.js').catch(error => {
+            console.warn('Unable to load the 3D study visual; using the lightweight CSS fallback.', error);
+        });
+    }
 })();

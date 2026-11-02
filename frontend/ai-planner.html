@@ -222,7 +222,7 @@
 
         <p>
 
-            Generate an intelligent study schedule using AI.
+            Create a browser-only study schedule draft.
 
         </p>
 
@@ -230,11 +230,11 @@
 
     <div class="top-right">
 
-        <button class="notification-btn">
+        <a class="notification-btn" href="notifications.html" aria-label="Open notifications">
 
             <i class="fa-solid fa-bell"></i>
 
-        </button>
+        </a>
 
         <button id="themeToggle">
 
@@ -270,6 +270,13 @@
 
     <div class="glass-card p-4">
 
+        <div class="neural-scene" aria-hidden="true">
+            <canvas class="neural-canvas" data-neural-scene></canvas>
+            <span class="neural-orbit"></span>
+            <span class="neural-orbit"></span>
+            <span class="neural-core"><i class="fa-solid fa-brain"></i></span>
+        </div>
+
         <span class="section-badge">
 
             🤖 Artificial Intelligence
@@ -278,13 +285,13 @@
 
         <h2 class="mt-3">
 
-            Create Your Personal AI Study Plan
+            Create Your Study Plan
 
         </h2>
 
         <p>
 
-            Enter your study details and let AI generate a personalized daily and weekly study timetable based on your subjects, available hours, exam dates, and learning goals.
+            Build a weekly timetable from your study details. This browser-only version uses a simple schedule rule; a live AI service is not connected.
 
         </p>
 
@@ -310,7 +317,7 @@
 
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
 
-                    Generate AI Study Plan
+                    Build Weekly Schedule
 
                 </h4>
 
@@ -584,7 +591,7 @@
 
                         <i class="fa-solid fa-robot"></i>
 
-                        Generate AI Study Plan
+                        Build Weekly Schedule
 
                     </button>
 
@@ -600,15 +607,11 @@
 
             <div class="glass-card p-4 mb-4">
 
-                <h5>
-
-                    🤖 AI Recommendation
-
-                </h5>
+                <h5>General Study Tip</h5>
 
                 <p id="aiTip">
 
-                    Complete today's study targets before starting new topics.
+                    Break a large topic into shorter sessions and take regular breaks.
 
                 </p>
 
@@ -622,23 +625,10 @@
 
                 </h5>
 
-                <div class="progress mt-4">
-
-                    <div
-
-                        class="progress-bar bg-success"
-
-                        style="width:65%">
-
-                    </div>
-
+                <div class="progress mt-4" role="progressbar" aria-label="Today's task completion" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar bg-success" id="plannerTodayProgressBar" style="width:0%"></div>
                 </div>
-
-                <p class="mt-3">
-
-                    65% Completed
-
-                </p>
+                <p class="mt-3" id="plannerTodayProgress">No tasks due today.</p>
 
             </div>
 
@@ -660,7 +650,7 @@
 
             <h3>
 
-                🤖 AI Generated Weekly Study Plan
+                Weekly Study Schedule
 
             </h3>
 
@@ -668,7 +658,7 @@
 
                 <i class="fa-solid fa-download"></i>
 
-                Export PDF
+                Download Plan
 
             </button>
 
@@ -696,104 +686,8 @@
 
                 </thead>
 
-                <tbody>
-
-                    <tr>
-
-                        <td>Monday</td>
-
-                        <td>Python</td>
-
-                        <td>DBMS</td>
-
-                        <td>Revision</td>
-
-                        <td>Practice</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Tuesday</td>
-
-                        <td>Java</td>
-
-                        <td>AI</td>
-
-                        <td>Assignments</td>
-
-                        <td>MCQ</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Wednesday</td>
-
-                        <td>Python</td>
-
-                        <td>Maths</td>
-
-                        <td>Revision</td>
-
-                        <td>Project</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Thursday</td>
-
-                        <td>Web Dev</td>
-
-                        <td>DBMS</td>
-
-                        <td>Practice</td>
-
-                        <td>Quiz</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Friday</td>
-
-                        <td>AI</td>
-
-                        <td>Python</td>
-
-                        <td>Revision</td>
-
-                        <td>Notes</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Saturday</td>
-
-                        <td>Projects</td>
-
-                        <td>Problem Solving</td>
-
-                        <td>Mock Test</td>
-
-                        <td>Analysis</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Sunday</td>
-
-                        <td colspan="4" class="text-center">
-
-                            Rest • Revision • Weekly Review
-
-                        </td>
-
-                    </tr>
-
+                <tbody id="weeklyPlanBody">
+                    <tr><td colspan="5" class="text-center text-secondary">Build a schedule above to see your local draft here.</td></tr>
                 </tbody>
 
             </table>
@@ -822,58 +716,8 @@
 
                 </h4>
 
-                <div class="dashboard-card">
-
-                    <div>
-
-                        <strong>Python Programming</strong>
-
-                        <p>Complete Functions Chapter</p>
-
-                    </div>
-
-                    <span class="badge bg-success">
-
-                        Pending
-
-                    </span>
-
-                </div>
-
-                <div class="dashboard-card">
-
-                    <div>
-
-                        <strong>DBMS</strong>
-
-                        <p>Normalization Revision</p>
-
-                    </div>
-
-                    <span class="badge bg-warning">
-
-                        Ongoing
-
-                    </span>
-
-                </div>
-
-                <div class="dashboard-card">
-
-                    <div>
-
-                        <strong>Java</strong>
-
-                        <p>Practice 20 Programs</p>
-
-                    </div>
-
-                    <span class="badge bg-primary">
-
-                        Scheduled
-
-                    </span>
-
+                <div id="plannerTodayTasks" class="app-grid" aria-live="polite">
+                    <div class="empty-state"><strong>No tasks due today</strong><span>Add dated tasks on the Tasks page to see them here.</span></div>
                 </div>
 
             </div>
@@ -890,64 +734,8 @@
 
                 </h4>
 
-                <div class="mb-4">
-
-                    <label>
-
-                        Python
-
-                    </label>
-
-                    <div class="progress">
-
-                        <div class="progress-bar bg-primary"
-
-                             style="width:80%">
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="mb-4">
-
-                    <label>
-
-                        DBMS
-
-                    </label>
-
-                    <div class="progress">
-
-                        <div class="progress-bar bg-success"
-
-                             style="width:65%">
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div>
-
-                    <label>
-
-                        Java
-
-                    </label>
-
-                    <div class="progress">
-
-                        <div class="progress-bar bg-warning"
-
-                             style="width:40%">
-
-                        </div>
-
-                    </div>
-
+                <div id="plannerTaskProgress" class="app-grid">
+                    <div class="empty-state"><strong>No subject activity yet</strong><span>Complete tasks with a subject to track progress.</span></div>
                 </div>
 
             </div>
@@ -972,7 +760,7 @@
 
                 <i class="fa-solid fa-book-open fa-2x text-primary mb-3"></i>
 
-                <h2>12</h2>
+                <h2 id="plannerSubjectCount">0</h2>
 
                 <p>Total Subjects</p>
 
@@ -986,7 +774,7 @@
 
                 <i class="fa-solid fa-list-check fa-2x text-success mb-3"></i>
 
-                <h2>58</h2>
+                <h2 id="plannerCompletedCount">0</h2>
 
                 <p>Completed Tasks</p>
 
@@ -1000,7 +788,7 @@
 
                 <i class="fa-solid fa-clock fa-2x text-warning mb-3"></i>
 
-                <h2>124h</h2>
+                <h2 id="plannerFocusHours">0h</h2>
 
                 <p>Study Hours</p>
 
@@ -1014,7 +802,7 @@
 
                 <i class="fa-solid fa-fire fa-2x text-danger mb-3"></i>
 
-                <h2>28</h2>
+                <h2 id="plannerFocusStreak">0</h2>
 
                 <p>Study Streak</p>
 
@@ -1036,7 +824,7 @@
 
         <h3 class="mb-4">
 
-            🤖 AI Recommendations
+            General Study Suggestions
 
         </h3>
 
@@ -1048,11 +836,11 @@
 
                     <div>
 
-                        <h5>Focus Subject</h5>
+                        <h5>Choose one focus</h5>
 
                         <p>
 
-                            Spend 2 extra hours on DBMS today.
+                            Pick one subject or assignment and work on it in a short, distraction-free block.
 
                         </p>
 
@@ -1068,11 +856,11 @@
 
                     <div>
 
-                        <h5>Revision Reminder</h5>
+                        <h5>Review regularly</h5>
 
                         <p>
 
-                            Revise Python Functions before sleeping.
+                            Briefly revisit earlier material when it helps reinforce your learning.
 
                         </p>
 
@@ -1088,7 +876,7 @@
 
                     <div>
 
-                        <h5>Productivity Tip</h5>
+                        <h5>Use planned breaks</h5>
 
                         <p>
 
@@ -1108,11 +896,11 @@
 
                     <div>
 
-                        <h5>Exam Prediction</h5>
+                        <h5>Keep goals realistic</h5>
 
                         <p>
 
-                            Current preparation score: <strong>82%</strong>
+                            Set a manageable daily goal and adjust it based on your schedule.
 
                         </p>
 
@@ -1179,6 +967,7 @@
         </h3>
 
         <textarea
+            id="plannerQuickNote"
 
             class="form-control"
 
@@ -1186,11 +975,12 @@
 
             placeholder="Write your important notes here..."></textarea>
 
-        <button class="btn btn-primary mt-3">
+        <button id="plannerQuickNoteSave" class="btn btn-primary mt-3" type="button">
 
             Save Notes
 
         </button>
+        <p id="plannerQuickNoteStatus" class="calendar-subtitle mt-2" role="status" aria-live="polite"></p>
 
     </div>
 
@@ -1210,32 +1000,8 @@
 
         </h3>
 
-        <ul class="list-group">
-
-            <li class="list-group-item bg-dark text-white">
-
-                ✅ Complete Python Chapter 5
-
-            </li>
-
-            <li class="list-group-item bg-dark text-white">
-
-                ✅ Solve 25 Programming Questions
-
-            </li>
-
-            <li class="list-group-item bg-dark text-white">
-
-                ✅ Revise DBMS Notes
-
-            </li>
-
-            <li class="list-group-item bg-dark text-white">
-
-                ⏳ Prepare for Tomorrow's Quiz
-
-            </li>
-
+        <ul class="list-group" id="plannerDailyGoals">
+            <li class="list-group-item">Add dated tasks to see your study goals here.</li>
         </ul>
 
     </div>

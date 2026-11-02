@@ -259,13 +259,13 @@
 
         <h2>
 
-            🤖 AI Study Planner
+         AI Study Planner
 
         </h2>
 
         <p>
 
-            Generate your personalized AI study schedule.
+            Build and save a browser-based study schedule draft.
 
         </p>
 
@@ -328,9 +328,16 @@
     <div class="glass-card"
          data-aos="fade-up">
 
+        <div class="neural-scene" aria-hidden="true">
+            <canvas class="neural-canvas" data-neural-scene></canvas>
+            <span class="neural-orbit"></span>
+            <span class="neural-orbit"></span>
+            <span class="neural-core"><i class="fa-solid fa-brain"></i></span>
+        </div>
+
         <span class="badge bg-primary">
 
-            🤖 AI Powered
+            Study Schedule Builder
 
         </span>
 
@@ -342,8 +349,7 @@
 
         <p>
 
-            Enter your study details below and let AI generate
-            a personalized study timetable for you.
+            Create a rule-based study plan draft from your inputs. Live AI is not configured in this workspace.
 
         </p>
 
@@ -534,7 +540,7 @@
 
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
 
-                Generate AI Study Plan
+                Build Local Study Plan
 
             </button>
 
@@ -554,13 +560,13 @@
 
         <h3>
 
-            🤖 AI Generated Study Plan
+            Local Study Plan Preview
 
         </h3>
 
         <span class="badge bg-success">
 
-            AI Ready
+            Browser-only
 
         </span>
 
@@ -573,8 +579,8 @@
             <i class="fa-solid fa-circle-info"></i>
 
             Fill out the form above and click
-            <strong>"Generate AI Study Plan"</strong>
-            to see your personalized study schedule.
+            <strong>"Build Local Study Plan"</strong>
+            to create a browser-only draft. A live AI service is not connected.
 
         </div>
 
@@ -588,11 +594,7 @@
 
 <div class="glass-card mt-5" data-aos="fade-up">
 
-    <h3>
-
-        📅 Today's Study Schedule
-
-    </h3>
+    <h3>📅 Today's Saved Tasks</h3>
 
     <div class="table-responsive mt-4">
 
@@ -602,97 +604,17 @@
 
                 <tr>
 
-                    <th>Time</th>
-                    <th>Activity</th>
-                    <th>Duration</th>
+                    <th>Day</th>
+                    <th>Task</th>
+                    <th>Subject</th>
                     <th>Status</th>
 
                 </tr>
 
             </thead>
 
-            <tbody>
-
-                <tr>
-
-                    <td>09:00 AM</td>
-
-                    <td>Python Programming</td>
-
-                    <td>2 Hours</td>
-
-                    <td>
-
-                        <span class="badge bg-success">
-
-                            Completed
-
-                        </span>
-
-                    </td>
-
-                </tr>
-
-                <tr>
-
-                    <td>11:30 AM</td>
-
-                    <td>DBMS Revision</td>
-
-                    <td>1.5 Hours</td>
-
-                    <td>
-
-                        <span class="badge bg-warning text-dark">
-
-                            Pending
-
-                        </span>
-
-                    </td>
-
-                </tr>
-
-                <tr>
-
-                    <td>02:00 PM</td>
-
-                    <td>Web Development</td>
-
-                    <td>2 Hours</td>
-
-                    <td>
-
-                        <span class="badge bg-primary">
-
-                            Upcoming
-
-                        </span>
-
-                    </td>
-
-                </tr>
-
-                <tr>
-
-                    <td>05:30 PM</td>
-
-                    <td>Practice Coding</td>
-
-                    <td>1 Hour</td>
-
-                    <td>
-
-                        <span class="badge bg-secondary">
-
-                            Scheduled
-
-                        </span>
-
-                    </td>
-
-                </tr>
-
+            <tbody id="plannerTodaySchedule">
+                <tr><td colspan="4" class="text-center text-secondary">No tasks due today.</td></tr>
             </tbody>
 
         </table>
@@ -709,7 +631,7 @@
 
     <h3>
 
-        💡 AI Study Recommendations
+        💡 General Study Suggestions
 
     </h3>
 
@@ -721,15 +643,11 @@
 
             <div>
 
-                <h5>
-
-                    Focus on Weak Subjects
-
-                </h5>
+                <h5>Break goals into steps</h5>
 
                 <p>
 
-                    Spend more time on subjects where your progress is lower.
+                    Split a large assignment into manageable tasks that fit your schedule.
 
                 </p>
 
@@ -743,11 +661,7 @@
 
             <div>
 
-                <h5>
-
-                    Use Pomodoro Technique
-
-                </h5>
+                <h5>Use planned breaks</h5>
 
                 <p>
 
@@ -765,11 +679,7 @@
 
             <div>
 
-                <h5>
-
-                    Daily Revision
-
-                </h5>
+                <h5>Review regularly</h5>
 
                 <p>
 
@@ -792,7 +702,7 @@
 <div class="glass-card mt-5" data-aos="fade-up">
 
     <h3>
-        📅 Weekly Study Timetable
+        📅 Upcoming Saved Tasks
     </h3>
 
     <div class="table-responsive mt-4">
@@ -803,64 +713,15 @@
 
                 <tr>
                     <th>Day</th>
-                    <th>Subject</th>
-                    <th>Time</th>
-                    <th>Duration</th>
+                    <th>Task</th>
+                    <th>Due date</th>
+                    <th>Status</th>
                 </tr>
 
             </thead>
 
-            <tbody>
-
-                <tr>
-                    <td>Monday</td>
-                    <td>Python</td>
-                    <td>9:00 AM</td>
-                    <td>2 Hours</td>
-                </tr>
-
-                <tr>
-                    <td>Tuesday</td>
-                    <td>DBMS</td>
-                    <td>10:00 AM</td>
-                    <td>2 Hours</td>
-                </tr>
-
-                <tr>
-                    <td>Wednesday</td>
-                    <td>Java</td>
-                    <td>9:30 AM</td>
-                    <td>2 Hours</td>
-                </tr>
-
-                <tr>
-                    <td>Thursday</td>
-                    <td>AI</td>
-                    <td>11:00 AM</td>
-                    <td>2 Hours</td>
-                </tr>
-
-                <tr>
-                    <td>Friday</td>
-                    <td>Web Development</td>
-                    <td>2:00 PM</td>
-                    <td>2 Hours</td>
-                </tr>
-
-                <tr>
-                    <td>Saturday</td>
-                    <td>Revision</td>
-                    <td>10:00 AM</td>
-                    <td>3 Hours</td>
-                </tr>
-
-                <tr>
-                    <td>Sunday</td>
-                    <td>Mock Test</td>
-                    <td>9:00 AM</td>
-                    <td>2 Hours</td>
-                </tr>
-
+            <tbody id="plannerUpcomingTasks">
+                <tr><td colspan="4" class="text-center text-secondary">No upcoming tasks.</td></tr>
             </tbody>
 
         </table>
@@ -876,47 +737,11 @@
 <div class="glass-card mt-5" data-aos="fade-up">
 
     <h3>
-        📈 Weekly Progress
+        📈 Task Progress by Subject
     </h3>
 
-    <div class="mt-4">
-
-        <label>Python</label>
-
-        <div class="progress mb-3">
-
-            <div class="progress-bar bg-success"
-                 style="width:90%">
-
-                90%
-
-            </div>
-
-        </div>
-
-        <label>DBMS</label>
-
-        <div class="progress mb-3">
-
-            <div class="progress-bar bg-info"
-                 style="width:75%">
-
-                75%
-
-            </div>
-
-        </div>
-
-        <label>AI</label>
-
-        <div class="progress mb-3">
-
-            <div class="progress-bar bg-warning"
-                 style="width:60%">
-
-                60%
-
-            </div>
+    <div class="mt-4 app-grid" id="plannerSubjectProgress">
+        <div class="empty-state"><strong>No subject activity yet</strong><span>Complete tasks with a subject to track progress.</span></div>
 
         </div>
 
@@ -942,9 +767,9 @@
     <button id="downloadPlan"
             class="btn btn-danger btn-lg">
 
-        <i class="fa-solid fa-file-pdf"></i>
+        <i class="fa-solid fa-file-arrow-down"></i>
 
-        Download PDF
+        Download text
 
     </button>
 
@@ -960,7 +785,7 @@
 
         <h3>
 
-            🧠 AI Study Tips
+            🧠 General Study Tips
 
         </h3>
 

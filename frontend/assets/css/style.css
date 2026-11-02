@@ -41,26 +41,8 @@ body{
 =========================*/
 
 body[data-theme="dark"]{
-
-    background:#0f172a;
-    color:#fff;
-
-}
-
-body[data-theme="dark"] section{
-
-    background:#0f172a !important;
-
-}
-
-body[data-theme="dark"] .feature-card,
-body[data-theme="dark"] .glass-card,
-body[data-theme="dark"] .dashboard-card,
-body[data-theme="dark"] .stat-card{
-
-    background:#1e293b;
-    color:#fff;
-
+    background:var(--app-bg, #080b16);
+    color:var(--ink, #f8fafc);
 }
 
 /*=========================
@@ -835,4 +817,3 @@ body[data-theme="dark"] .accordion-button{
     color:#fff;
 
 }
-

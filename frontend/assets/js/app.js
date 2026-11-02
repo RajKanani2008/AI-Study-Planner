@@ -5,6 +5,12 @@
 
 (() => {
 
+if (document.querySelector('canvas[data-neural-scene]')) {
+    import('./experience.js').catch(error => {
+        console.warn('Unable to load the 3D study visual; using the lightweight CSS fallback.', error);
+    });
+}
+
 /*=========================
         PAGE LOADER
 =========================*/
@@ -314,10 +320,7 @@ if (newsletter) {
     newsletter.addEventListener("submit", (e) => {
 
         e.preventDefault();
-
-        alert("Thank You For Subscribing!");
-
-        newsletter.reset();
+        showFormMessage(newsletter, "Newsletter signup is not configured. Your email was not sent or saved.");
 
     });
 
@@ -334,13 +337,23 @@ if (contactForm) {
     contactForm.addEventListener("submit", (e) => {
 
         e.preventDefault();
-
-        alert("Message Sent Successfully!");
-
-        contactForm.reset();
+        showFormMessage(contactForm, "Contact is not configured. Your message was not sent.");
 
     });
 
+}
+
+function showFormMessage(form, message) {
+    let status = form.querySelector('[data-form-status]');
+    if (!status) {
+        status = document.createElement("p");
+        status.dataset.formStatus = "true";
+        status.className = "form-status mt-3";
+        status.setAttribute("role", "status");
+        status.setAttribute("aria-live", "polite");
+        form.append(status);
+    }
+    status.textContent = message;
 }
 
 /*=========================
@@ -363,20 +376,16 @@ const themeToggle = document.getElementById("themeToggle");
 
 const body = document.body;
 
-const savedTheme = localStorage.getItem("theme");
+const savedTheme = localStorage.getItem("theme") || "dark";
 
-if (savedTheme) {
+body.setAttribute("data-theme", savedTheme);
 
-    body.setAttribute("data-theme", savedTheme);
+if (themeToggle) {
 
-    if (themeToggle) {
-
-        themeToggle.innerHTML =
-            savedTheme === "light"
-                ? '<i class="fa-solid fa-sun"></i>'
-                : '<i class="fa-solid fa-moon"></i>';
-
-    }
+    themeToggle.innerHTML =
+        savedTheme === "light"
+            ? '<i class="fa-solid fa-sun"></i>'
+            : '<i class="fa-solid fa-moon"></i>';
 
 }
 
@@ -469,6 +478,8 @@ function updateTimer() {
 
 function startPomodoro() {
 
+    if (minutes === 0 && seconds === 0) return;
+
     clearInterval(timer);
 
     timer = setInterval(() => {
@@ -479,7 +490,23 @@ function startPomodoro() {
 
                 clearInterval(timer);
 
-                showToast("Pomodoro Completed!");
+                const completedAt = new Date();
+                try {
+                    const saved = localStorage.getItem("studySessions");
+                    const sessions = saved ? JSON.parse(saved) : [];
+                    if (!Array.isArray(sessions)) throw new Error("Saved focus sessions are not a list.");
+                    sessions.push({
+                        id: String(Date.now()),
+                        minutes: 25,
+                        date: `${completedAt.getFullYear()}-${String(completedAt.getMonth() + 1).padStart(2, "0")}-${String(completedAt.getDate()).padStart(2, "0")}`,
+                        completedAt: completedAt.toISOString()
+                    });
+                    localStorage.setItem("studySessions", JSON.stringify(sessions));
+                    showToast("Pomodoro completed and saved.");
+                } catch (error) {
+                    console.error("Unable to save the completed focus session.", error);
+                    showToast("Pomodoro completed, but the session could not be saved.");
+                }
 
                 return;
 

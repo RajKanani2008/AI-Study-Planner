@@ -67,11 +67,9 @@
     document.getElementById('nextMonth').addEventListener('click', () => { month.setMonth(month.getMonth() + 1); render(); });
     document.getElementById('todayButton').addEventListener('click', () => { month = new Date(today.getFullYear(), today.getMonth(), 1); selected = new Date(today); render(); });
 
-    window.addEventListener('storage', event => {
-        if (event.key === 'studyPlannerTasks') {
-            tasks = storage.read('studyPlannerTasks', []);
-            render();
-        }
+    storage.subscribe('studyPlannerTasks', value => {
+        tasks = value;
+        render();
     });
     render();
 })();

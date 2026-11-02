@@ -357,7 +357,7 @@
 
         <span class="badge bg-primary">
 
-            🤖 AI Powered
+            Browser-only workspace
 
         </span>
 
@@ -377,7 +377,7 @@
 
         <p>
 
-            Your AI Study Planner is ready.
+            Your study workspace is ready.
 
             Complete today's tasks,
 
@@ -395,7 +395,7 @@
 
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
 
-                Generate AI Plan
+                Build Study Schedule
 
             </a>
 
@@ -415,7 +415,13 @@
 
     <div class="welcome-right">
 
-        <div class="welcome-art" aria-hidden="true"><i class="fa-solid fa-robot"></i><span class="welcome-art-cap"><i class="fa-solid fa-book-open"></i></span></div>
+        <div class="welcome-art neural-scene" aria-hidden="true">
+            <canvas class="neural-canvas" data-neural-scene></canvas>
+            <span class="neural-orbit"></span>
+            <span class="neural-orbit"></span>
+            <span class="neural-core"><i class="fa-solid fa-brain"></i></span>
+            <span class="welcome-art-cap"><i class="fa-solid fa-book-open"></i></span>
+        </div>
 
     </div>
 
@@ -443,7 +449,7 @@
 
                 <div class="stat-content">
 
-                    <h2 data-count="8">
+                    <h2 data-count="0">
 
                         0
 
@@ -475,7 +481,7 @@
 
                 <div class="stat-content">
 
-                    <h2 data-count="25">
+                    <h2 data-count="0">
 
                         0
 
@@ -507,7 +513,7 @@
 
                 <div class="stat-content">
 
-                    <h2 data-count="18">
+                    <h2 data-count="0">
 
                         0
 
@@ -539,7 +545,7 @@
 
                 <div class="stat-content">
 
-                    <h2 data-count="124">
+                    <h2 data-count="0">
 
                         0
 
@@ -589,7 +595,7 @@
 
             <span class="badge bg-success" id="todayCompletion">
 
-                70% Completed
+                0% Completed
 
             </span>
 
@@ -683,110 +689,11 @@
 
         <div class="schedule-list" id="todaySchedule">
 
-            <div class="schedule-item">
-
-                <div>
-
-                    <strong>
-
-                        Python Programming
-
-                    </strong>
-
-                    <p>
-
-                        09:00 AM - 11:00 AM
-
-                    </p>
-
-                </div>
-
-                <span class="badge bg-primary">
-
-                    2 Hours
-
-                </span>
-
+            <div class="empty-state">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                <strong>Your schedule will appear here</strong>
+                <span>Add dated tasks to build your day.</span>
             </div>
-
-            <div class="schedule-item">
-
-                <div>
-
-                    <strong>
-
-                        Database Management
-
-                    </strong>
-
-                    <p>
-
-                        11:30 AM - 01:00 PM
-
-                    </p>
-
-                </div>
-
-                <span class="badge bg-success">
-
-                    1.5 Hours
-
-                </span>
-
-            </div>
-
-            <div class="schedule-item">
-
-                <div>
-
-                    <strong>
-
-                        Web Development
-
-                    </strong>
-
-                    <p>
-
-                        02:00 PM - 04:00 PM
-
-                    </p>
-
-                </div>
-
-                <span class="badge bg-warning">
-
-                    2 Hours
-
-                </span>
-
-            </div>
-
-            <div class="schedule-item">
-
-                <div>
-
-                    <strong>
-
-                        AI Revision
-
-                    </strong>
-
-                    <p>
-
-                        05:30 PM - 06:30 PM
-
-                    </p>
-
-                </div>
-
-                <span class="badge bg-danger">
-
-                    1 Hour
-
-                </span>
-
-            </div>
-
         </div>
 
     </div>
@@ -849,104 +756,12 @@
 
                 </div>
 
-                <div class="subject-progress">
-
-                    <!-- Python -->
-
-                    <div class="subject-item">
-
-                        <div class="d-flex justify-content-between">
-
-                            <span>Python</span>
-
-                            <strong>90%</strong>
-
-                        </div>
-
-                        <div class="progress mt-2">
-
-                            <div class="progress-bar bg-success"
-
-                                 style="width:90%">
-
-                            </div>
-
-                        </div>
-
+                <div class="subject-progress" id="dashboardSubjectProgress">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                        <strong>No subject activity yet</strong>
+                        <span>Add subjects and tasks to see progress.</span>
                     </div>
-
-                    <!-- DBMS -->
-
-                    <div class="subject-item mt-4">
-
-                        <div class="d-flex justify-content-between">
-
-                            <span>DBMS</span>
-
-                            <strong>76%</strong>
-
-                        </div>
-
-                        <div class="progress mt-2">
-
-                            <div class="progress-bar bg-info"
-
-                                 style="width:76%">
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Web Development -->
-
-                    <div class="subject-item mt-4">
-
-                        <div class="d-flex justify-content-between">
-
-                            <span>Web Development</span>
-
-                            <strong>68%</strong>
-
-                        </div>
-
-                        <div class="progress mt-2">
-
-                            <div class="progress-bar bg-warning"
-
-                                 style="width:68%">
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <!-- AI -->
-
-                    <div class="subject-item mt-4">
-
-                        <div class="d-flex justify-content-between">
-
-                            <span>Artificial Intelligence</span>
-
-                            <strong>52%</strong>
-
-                        </div>
-
-                        <div class="progress mt-2">
-
-                            <div class="progress-bar bg-danger"
-
-                                 style="width:52%">
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
                 </div>
 
             </div>
@@ -958,7 +773,7 @@
 </section>
 
 <!-- ==========================================
-                AI RECOMMENDATIONS
+                General Study Suggestions
 ========================================== -->
 
 <section class="mt-5">
@@ -983,12 +798,12 @@
 
                 <div>
 
-                    <h5>Focus on DBMS</h5>
+                    <h5>Break a goal into steps</h5>
 
                     <p>
 
-                        Your DBMS progress is lower than Python.
-                        Spend at least 60 more minutes today.
+                    Turn a large assignment into a few focused tasks.
+                    These are general tips, not AI-generated recommendations.
 
                     </p>
 
@@ -1002,12 +817,11 @@
 
                 <div>
 
-                    <h5>Revision Reminder</h5>
+                    <h5>Review as you go</h5>
 
                     <p>
 
-                        Revise yesterday's topics before starting
-                        a new lesson.
+                        Briefly revisit earlier material when it helps you learn.
 
                     </p>
 
@@ -1021,12 +835,11 @@
 
                 <div>
 
-                    <h5>Best Study Time</h5>
+                    <h5>Protect a focus block</h5>
 
                     <p>
 
-                        According to your activity,
-                        7 PM to 9 PM is your most productive time.
+                        Choose a time that fits your routine and reduce distractions.
 
                     </p>
 
@@ -1270,18 +1083,8 @@
 
                 </div>
 
-                <ul class="notification-list">
-
-                    <li>✅ Python Assignment Tomorrow</li>
-
-                    <li>📅 New AI Study Plan Generated</li>
-
-                    <li>🎯 Daily Goal 70% Completed</li>
-
-                    <li>📚 Notes Successfully Saved</li>
-
-                    <li>🔥 Keep Your Study Streak Alive</li>
-
+                <ul class="notification-list" id="dashboardNotifications">
+                    <li>No task updates yet.</li>
                 </ul>
 
             </div>
@@ -1298,7 +1101,7 @@
 
                     <h3>
 
-                        🤖 AI Performance
+                        Task Completion
 
                     </h3>
 
@@ -1308,7 +1111,7 @@
 
                     <h1>
 
-                        92%
+                        <span id="productivityScore">0%</span>
 
                     </h1>
 
@@ -1316,9 +1119,7 @@
 
                 <p>
 
-                    Excellent consistency.
-
-                    Keep studying daily to reach your weekly goal.
+                    <span id="productivityCaption">Complete tasks to start tracking local progress.</span>
 
                 </p>
 
@@ -1348,92 +1149,12 @@
 
         </div>
 
-        <div class="timeline">
-
-            <div class="timeline-item">
-
-                <div class="timeline-dot bg-success"></div>
-
-                <div class="timeline-content">
-
-                    <h5>
-
-                        Python Session Completed
-
-                    </h5>
-
-                    <p>
-
-                        Completed Functions & Modules chapter.
-
-                    </p>
-
-                    <small>
-
-                        09:00 AM
-
-                    </small>
-
-                </div>
-
+        <div class="timeline" id="dashboardRecentActivity">
+            <div class="empty-state">
+                <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                <strong>No recent activity yet</strong>
+                <span>Completed focus sessions and updated notes will appear here.</span>
             </div>
-
-            <div class="timeline-item">
-
-                <div class="timeline-dot bg-primary"></div>
-
-                <div class="timeline-content">
-
-                    <h5>
-
-                        AI Planner Generated Schedule
-
-                    </h5>
-
-                    <p>
-
-                        New weekly timetable has been created.
-
-                    </p>
-
-                    <small>
-
-                        11:30 AM
-
-                    </small>
-
-                </div>
-
-            </div>
-
-            <div class="timeline-item">
-
-                <div class="timeline-dot bg-warning"></div>
-
-                <div class="timeline-content">
-
-                    <h5>
-
-                        Notes Updated
-
-                    </h5>
-
-                    <p>
-
-                        Added DBMS normalization notes.
-
-                    </p>
-
-                    <small>
-
-                        02:15 PM
-
-                    </small>
-
-                </div>
-
-            </div>
-
         </div>
 
     </div>
@@ -1452,13 +1173,15 @@
 
             <h3>
 
-                🤖 AI Study Assistant
+                Study Assistant Demo
 
             </h3>
 
         </div>
 
-        <div class="chat-box">
+        <p class="calendar-subtitle">This demo echoes your message; it does not connect to an AI service.</p>
+
+        <div class="chat-box chat-container">
 
             <div class="chat-message ai">
 
@@ -1544,73 +1267,17 @@
 
                     <h3>
 
-                        🏆 Weekly Leaderboard
+                        Shared Study Rankings
 
                     </h3>
 
                 </div>
 
-                <table class="table table-dark table-hover">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Rank</th>
-
-                            <th>Name</th>
-
-                            <th>Hours</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-
-                            <td>🥇</td>
-
-                            <td>Student 1</td>
-
-                            <td>42 Hours</td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>🥈</td>
-
-                            <td>Student 2</td>
-
-                            <td>39 Hours</td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>🥉</td>
-
-                            <td>Student 3</td>
-
-                            <td>36 Hours</td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>4️⃣</td>
-
-                            <td>Student 4</td>
-
-                            <td>31 Hours</td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
+                <div class="empty-state">
+                    <i class="fa-solid fa-users" aria-hidden="true"></i>
+                    <strong>Shared rankings are unavailable</strong>
+                    <span>This browser-only demo has no shared student or server data.</span>
+                </div>
 
             </div>
 
@@ -1632,21 +1299,18 @@
 
             <h3>
 
-                📈 Weekly Study Heatmap
+                📈 Weekly Focus Activity
 
             </h3>
 
         </div>
 
-        <div class="heatmap">
-
-            <div class="heat high"></div>
-            <div class="heat medium"></div>
-            <div class="heat high"></div>
-            <div class="heat low"></div>
-            <div class="heat medium"></div>
-            <div class="heat high"></div>
-            <div class="heat high"></div>
+        <div class="heatmap" id="weeklyHeatmap">
+            <div class="empty-state">
+                <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+                <strong>No focus sessions this week</strong>
+                <span>Completed Pomodoro focus blocks will appear here.</span>
+            </div>
 
         </div>
 
@@ -1701,4 +1365,3 @@ if (typeof AOS !== "undefined") {
 </body>
 
 </html>
-

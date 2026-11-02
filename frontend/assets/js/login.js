@@ -107,14 +107,13 @@ if (forgotPasswordLink && forgotPasswordHelp) {
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", (e) => {
+    loginForm.addEventListener("submit", async (e) => {
 
         e.preventDefault();
 
         const email = emailInput.value.trim();
 
-        const pass =
-            document.getElementById("loginPassword").value.trim();
+        const pass = password.value;
 
         const emailValid = updateFieldError(emailInput, emailFeedback, validateEmail());
         const passwordValid = updateFieldError(password, passwordFeedback, validatePassword());
@@ -136,14 +135,34 @@ if (loginForm) {
         loginSubmit.querySelector(".login-spinner").setAttribute("aria-hidden", "false");
         loginStatus.textContent = "Signing in…";
 
-        // Save Login
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("isLoggedIn", "true");
+        try {
+            const result = await window.StudyPlannerAuth.verifyPassword(email, pass);
+            if (!result.valid) {
+                loginStatus.textContent = result.legacyPasswordRemoved
+                    ? "The old browser-stored password was cleared. Create a new local demo account to continue."
+                    : "Email or password is incorrect. Create a local demo account if you have not registered in this browser.";
+                return;
+            }
 
-        alert("Login Successful!");
-
-        // Redirect
-        window.location.href = "dashboard.html";
+            if (document.getElementById("remember").checked) {
+                localStorage.setItem("userEmail", email);
+                sessionStorage.removeItem("userEmail");
+            } else {
+                localStorage.removeItem("userEmail");
+                sessionStorage.setItem("userEmail", email);
+            }
+            localStorage.setItem("isLoggedIn", "true");
+            loginStatus.textContent = "Signed in. Opening your study space…";
+            window.location.href = "dashboard.html";
+        } catch (error) {
+            loginStatus.textContent = error.message || "Could not verify this local account.";
+        } finally {
+            loginSubmit.disabled = false;
+            loginSubmit.removeAttribute("aria-busy");
+            loginSubmit.querySelector("[data-submit-label]").textContent = "Sign in";
+            loginSubmit.querySelector(".login-spinner").hidden = true;
+            loginSubmit.querySelector(".login-spinner").setAttribute("aria-hidden", "true");
+        }
 
     });
 
@@ -152,7 +171,7 @@ if (loginForm) {
 // Remember Email
 window.addEventListener("load", () => {
 
-    const email = localStorage.getItem("userEmail");
+    const email = localStorage.getItem("userEmail") || sessionStorage.getItem("userEmail");
 
     if (email) {
 
@@ -160,7 +179,14 @@ window.addEventListener("load", () => {
 
     }
 
-});
+    try {
+        const account = window.StudyPlannerAuth.readAccount();
+        if (account.legacyPasswordRemoved && loginStatus) {
+            loginStatus.textContent = "A previously stored plain-text password was removed. Create a new local demo account before signing in.";
+        }
+    } catch (error) {
+        if (loginStatus) loginStatus.textContent = error.message || "Could not read the local demo account.";
+    }
 
-console.log("✅ Login Page Loaded Successfully");
+});
 
